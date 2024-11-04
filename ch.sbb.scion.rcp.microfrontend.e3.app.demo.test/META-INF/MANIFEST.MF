@@ -10,7 +10,6 @@ Eclipse-RegisterBuddy: org.apache.log4j
 Require-Bundle: org.eclipse.swt,
  org.eclipse.swtbot.go,
  org.eclipse.swtbot.e4.finder,
- org.eclipse.swtbot.eclipse.junit5.headless,
  junit-jupiter-api,
  junit-jupiter-engine,
  org.apache.log4j

@@ -1,5 +1,7 @@
 package ch.sbb.scion.rcp.microfrontend.host;
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -8,10 +10,6 @@ import java.util.concurrent.CompletableFuture;
 import java.lang.reflect.Type;
 
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.browser.ProgressAdapter;
-import org.eclipse.swt.browser.ProgressEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Display;
@@ -19,6 +17,12 @@ import org.eclipse.swt.widgets.Shell;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
+
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.navigation.event.LoadFinished;
+import com.teamdev.jxbrowser.view.swt.BrowserView;
 
 import ch.sbb.scion.rcp.microfrontend.RouterOutlet;
 import ch.sbb.scion.rcp.microfrontend.browser.JavaCallback;
@@ -49,8 +53,8 @@ public class MicrofrontendPlatformRcpHost {
   private final List<MessageInterceptorDescriptor<?>> messageInterceptors = new ArrayList<>();
   private final List<IntentInterceptorDescriptor<?>> intentInterceptors = new ArrayList<>();
 
-  public Browser hostBrowser;
-  public CompletableFuture<Browser> whenHostBrowser = new CompletableFuture<>();
+  public BrowserView hostBrowser;
+  public CompletableFuture<BrowserView> whenHostBrowser = new CompletableFuture<>();
 
   @Reference
   private MessageInterceptorInstaller messageInterceptorInstaller;
@@ -63,12 +67,14 @@ public class MicrofrontendPlatformRcpHost {
    *
    * @see "https://scion-microfrontend-platform-api.vercel.app/classes/MicrofrontendPlatformHost.html#start"
    */
-  public CompletableFuture<Browser> start(final MicrofrontendPlatformConfig config, final boolean headless) {
+  public CompletableFuture<BrowserView> start(final MicrofrontendPlatformConfig config, final boolean headless) {
     // Create the shell
     shell = new Shell(Display.getDefault());
     shell.setLayout(new FillLayout());
     shell.setSize(new Point(400, 700));
     shell.setText("SCION Microfrontend Platform RCP host");
+
+    Browser browser = Engine.newInstance(EngineOptions.newBuilder(HARDWARE_ACCELERATED).licenseKey("k").build()).newBrowser();
 
     // Create webserver to serve the host app on a random port.
     webserver = new Webserver(Map.of("host.html", new Resource(Resources.get("js/host.html"), "text/html", "utf-8"), "js/refs.js",
@@ -77,20 +83,18 @@ public class MicrofrontendPlatformRcpHost {
         new Resource(Resources.get("js/helpers.js"), "application/javascript", "utf-8"))).start();
 
     // Create the browser and
-    hostBrowser = new Browser(shell, SWT.EDGE);
-    hostBrowser.addProgressListener(new ProgressAdapter() {
+    hostBrowser = BrowserView.newInstance(shell, browser);
 
-      @Override
-      public void completed(final ProgressEvent event) {
-        startHost(config);
-      };
+    browser.navigation().on(LoadFinished.class, e -> {
+      startHost(config);
     });
 
     if (!headless) {
       shell.open();
     }
 
-    hostBrowser.setUrl(String.format("http://localhost:%d/host.html", Integer.valueOf(webserver.getPort())));
+    hostBrowser.getBrowser().navigation()
+        .loadUrlAndWait(String.format("http://localhost:%d/host.html", Integer.valueOf(webserver.getPort())));
     return whenHostBrowser;
   }
 

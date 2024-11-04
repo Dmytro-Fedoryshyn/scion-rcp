@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-17">
 		<attributes>
 			<attribute name="module" value="true"/>
@@ -11,5 +12,7 @@
 			<attribute name="test" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/dimon/Downloads/mockito-core-5.14.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/dimon/Downloads/mockito-junit-jupiter-5.14.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

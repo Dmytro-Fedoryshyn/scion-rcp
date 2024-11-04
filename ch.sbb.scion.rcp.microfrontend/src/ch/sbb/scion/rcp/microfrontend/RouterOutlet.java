@@ -1,5 +1,7 @@
 package ch.sbb.scion.rcp.microfrontend;
 
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashSet;
@@ -20,15 +22,17 @@ import java.net.URLDecoder;
 import javax.inject.Inject;
 
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.browser.ProgressAdapter;
-import org.eclipse.swt.browser.ProgressEvent;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.navigation.event.LoadFinished;
+import com.teamdev.jxbrowser.view.swt.BrowserView;
 
 import ch.sbb.scion.rcp.microfrontend.browser.JavaCallback;
 import ch.sbb.scion.rcp.microfrontend.browser.JavaScriptExecutor;
@@ -50,6 +54,7 @@ public final class RouterOutlet extends Composite implements DisposeListener {
   private static final boolean BRIDGE_LOGGER_ENABLED = false;
 
   private final RouterOutletProxy routerOutletProxy;
+  private final BrowserView browserView;
   private final Browser browser;
   private URL url;
   private final IDisposable navigator;
@@ -78,25 +83,25 @@ public final class RouterOutlet extends Composite implements DisposeListener {
 
     routerOutletProxy = new RouterOutletProxy(outletName);
 
-    browser = new Browser(this, SWT.EDGE);
-    browser.addProgressListener(new ProgressAdapter() {
+    Engine engine = Engine.newInstance(EngineOptions.newBuilder(HARDWARE_ACCELERATED).licenseKey("k").build());
 
-      private final List<IDisposable> disposables = new ArrayList<>();
+    browser = engine.newBrowser();
+    browserView = BrowserView.newInstance(this, browser);
+    browser.navigation().on(LoadFinished.class, event -> {
 
-      @Override
-      public void completed(final ProgressEvent event) {
-        // is invoked when completed loading the app, or when reloading it, e.g., due to
-        // hot code replacement during development
-        disposables.forEach(IDisposable::dispose);
-        disposables.clear();
+      final List<IDisposable> disposables = new ArrayList<>();
+      // is invoked when completed loading the app, or when reloading it, e.g., due to
+      // hot code replacement during development
+      disposables.forEach(IDisposable::dispose);
+      disposables.clear();
 
-        browser.execute(Resources.readString("js/helpers.js"));
-        var clientToSciRouterOutletMessageDispatcher = installClientToSciRouterOutletMessageDispatcher();
-        var sciRouterOutletToClientMessageDispatcher = installSciRouterOutletToClientMessageDispatcher();
+      browser.mainFrame().ifPresent(frame -> frame.executeJavaScript(Resources.readString("js/helpers.js")));
+      var clientToSciRouterOutletMessageDispatcher = installClientToSciRouterOutletMessageDispatcher();
+      var sciRouterOutletToClientMessageDispatcher = installSciRouterOutletToClientMessageDispatcher();
 
-        disposables.add(clientToSciRouterOutletMessageDispatcher);
-        disposables.add(sciRouterOutletToClientMessageDispatcher);
-      }
+      disposables.add(clientToSciRouterOutletMessageDispatcher);
+      disposables.add(sciRouterOutletToClientMessageDispatcher);
+
     });
 
     navigator = installRouter(outletName);
@@ -119,7 +124,7 @@ public final class RouterOutlet extends Composite implements DisposeListener {
 
         var pushStateToSessionHistoryStack = Optional.ofNullable(event.headers().get("ɵPUSH_STATE_TO_SESSION_HISTORY_STACK"))
             .orElse(Boolean.FALSE);
-        new JavaScriptExecutor(browser, Resources.readString("js/sci-router-outlet/navigate.js")).replacePlaceholder("url", url)
+        new JavaScriptExecutor(browserView, Resources.readString("js/sci-router-outlet/navigate.js")).replacePlaceholder("url", url)
             .replacePlaceholder("pushStateToSessionHistoryStack", pushStateToSessionHistoryStack).execute()
             .thenRun(() -> loadListeners.forEach(listener -> listener.onLoad(url)));
       }
@@ -140,7 +145,7 @@ public final class RouterOutlet extends Composite implements DisposeListener {
     return routerOutletProxy.onKeystroke(event -> {
       keystrokeTarget.setFocus();
       // Prevent infinite cycle:
-      if (browser.isFocusControl()) {
+      if (browserView.isFocusControl()) {
         throw new IllegalStateException(
             "Browser has focus. Make sure that the keystrokeTarget is not a parent of this SciRouterOutlet and," + //
                 "that the keystrokeTarget can gain focus; i.e., it does not have the SWT.NO_FOCUS style bit set.");
@@ -226,7 +231,7 @@ public final class RouterOutlet extends Composite implements DisposeListener {
     var disposables = new ArrayList<IDisposable>();
     manifestService.getApplications().thenAccept(applications -> {
       var trustedOrigins = getTrustedOrigins(applications);
-      new JavaCallback(browser, args -> {
+      new JavaCallback(browserView, args -> {
         var base64json = (String) args[0];
         var origin = (String) args[1];
         var sender = (String) args[2];
@@ -262,13 +267,13 @@ public final class RouterOutlet extends Composite implements DisposeListener {
         }
       }).addTo(disposables).install().thenAccept(callback -> {
         var uuid = UUID.randomUUID();
-        new JavaScriptExecutor(browser, Resources.readString("js/sci-router-outlet/install-client-message-dispatcher.js"))
+        new JavaScriptExecutor(browserView, Resources.readString("js/sci-router-outlet/install-client-message-dispatcher.js"))
             .replacePlaceholder("callback", callback.name).replacePlaceholder("helpers.toJson", Helpers.toJson)
             .replacePlaceholder("headers.AppSymbolicName", MessageHeaders.APP_SYMBOLIC_NAME).replacePlaceholder("storage", Scripts.Storage)
             .replacePlaceholder("uninstallStorageKey", uuid).execute();
 
-        disposables
-            .add(() -> new JavaScriptExecutor(browser, Resources.readString("js/sci-router-outlet/uninstall-client-message-dispatcher.js"))
+        disposables.add(
+            () -> new JavaScriptExecutor(browserView, Resources.readString("js/sci-router-outlet/uninstall-client-message-dispatcher.js"))
                 .replacePlaceholder("storage", Scripts.Storage).replacePlaceholder("uninstallStorageKey", uuid).execute());
       });
     });
@@ -285,7 +290,7 @@ public final class RouterOutlet extends Composite implements DisposeListener {
         Platform.getLog(RouterOutlet.class).info("[SciBridge] [host=>client] " + decodeBase64(base64json));
       }
 
-      new JavaScriptExecutor(browser, "window.postMessage(/@@helpers.fromJson@@/('/@@base64json@@/', {decode: true}));")
+      new JavaScriptExecutor(browserView, "window.postMessage(/@@helpers.fromJson@@/('/@@base64json@@/', {decode: true}));")
           .replacePlaceholder("base64json", base64json).replacePlaceholder("helpers.fromJson", Helpers.fromJson).execute();
     });
   }

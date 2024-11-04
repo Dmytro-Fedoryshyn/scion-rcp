@@ -9,8 +9,9 @@ import java.util.function.Consumer;
 
 import javax.inject.Inject;
 
-import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Event;
+
+import com.teamdev.jxbrowser.view.swt.BrowserView;
 
 import ch.sbb.scion.rcp.microfrontend.IDisposable;
 import ch.sbb.scion.rcp.microfrontend.RouterOutlet;
@@ -31,7 +32,7 @@ import ch.sbb.scion.rcp.microfrontend.script.Scripts.Refs;
 public class RouterOutletProxy {
 
   private final String outletId;
-  private final CompletableFuture<Browser> whenOutlet;
+  private final CompletableFuture<BrowserView> whenOutlet;
   private final List<Consumer<String>> outletToProxyMessageListeners = new ArrayList<>();
   private final List<Consumer<Event>> outletToProxyKeystrokeListeners = new ArrayList<>();
   private final List<Consumer<Boolean>> outletToProxyFocusWithinListeners = new ArrayList<>();

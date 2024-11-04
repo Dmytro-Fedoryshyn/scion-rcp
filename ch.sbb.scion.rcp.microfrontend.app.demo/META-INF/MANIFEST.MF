@@ -4,7 +4,7 @@ Bundle-Name: RCP Application
 Bundle-SymbolicName: ch.sbb.scion.rcp.microfrontend.app.demo;singleton:=true
 Bundle-Version: 0.0.9.qualifier
 Bundle-Activator: ch.sbb.scion.rcp.microfrontend.app.demo.Activator
-Require-Bundle: javax.inject,
+Require-Bundle: 
  org.eclipse.swt,
  org.eclipse.e4.ui.model.workbench,
  org.eclipse.jface,

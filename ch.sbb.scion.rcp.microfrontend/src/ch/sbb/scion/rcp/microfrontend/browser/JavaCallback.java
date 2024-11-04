@@ -6,8 +6,11 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
-import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.BrowserFunction;
+
+import com.teamdev.jxbrowser.js.JsFunctionCallback;
+import com.teamdev.jxbrowser.js.JsObject;
+import com.teamdev.jxbrowser.view.swt.BrowserView;
 
 import ch.sbb.scion.rcp.microfrontend.IDisposable;
 
@@ -20,15 +23,14 @@ public class JavaCallback implements IDisposable {
 
   public final String name;
 
-  private CompletableFuture<Browser> whenBrowser;
-  private BrowserFunction browserFunction;
-  private Consumer<Object[]> callback;
+  private final CompletableFuture<BrowserView> whenBrowser;
+  private final Consumer<Object[]> callback;
 
-  public JavaCallback(Browser browser, Consumer<Object[]> callback) {
+  public JavaCallback(final BrowserView browser, final Consumer<Object[]> callback) {
     this(CompletableFuture.completedFuture(browser), callback);
   }
 
-  public JavaCallback(CompletableFuture<Browser> whenBrowser, Consumer<Object[]> callback) {
+  public JavaCallback(final CompletableFuture<BrowserView> whenBrowser, final Consumer<Object[]> callback) {
     this.whenBrowser = whenBrowser;
     this.name = toValidJavaScriptIdentifier("__scion_rcp_browserfunction_" + UUID.randomUUID());
     this.callback = callback;
@@ -50,28 +52,38 @@ public class JavaCallback implements IDisposable {
     return install(true);
   }
 
-  private CompletableFuture<JavaCallback> install(boolean once) {
+  public CompletableFuture<JavaCallback> install(final boolean once) {
     return whenBrowser.thenAccept(browser -> {
-      browserFunction = new BrowserFunction(browser, name) {
+      // Define a JavaScript function in the browser context
+      JsObject window = browser.getBrowser().mainFrame().orElseThrow().executeJavaScript("window");
+
+      JsFunctionCallback callback = new JsFunctionCallback() {
 
         @Override
-        public Boolean function(Object[] arguments) {
+        public Object invoke(final Object... args) {
           if (once) {
-            dispose();
+            // Remove the binding if it should only be used once
+            window.removeProperty(name);
           }
-          // Invoke the callback asynchronously to first complete the invocation of this browser function.
-          // Otherwise, creating a new {@link Browser} instance in the callback would lead to a deadlock.
-          browser.getDisplay().asyncExec(() -> callback.accept(arguments));
+
+          // Execute callback asynchronously in the Java context
+          browser.getDisplay().asyncExec(() -> invoke(args));
+
           return Boolean.TRUE;
         }
       };
-    }).thenApply(browser -> this);
+
+      window.putProperty(name, callback);
+
+      // Bind the JavaScript function to the window object
+
+    }).thenApply(browserView -> this);
   }
 
   /**
    * Adds this {@link JavaCallback} to the passed collection.
    */
-  public JavaCallback addTo(Collection<IDisposable> disposables) {
+  public JavaCallback addTo(final Collection<IDisposable> disposables) {
     disposables.add(this);
     return this;
   }
@@ -84,13 +96,14 @@ public class JavaCallback implements IDisposable {
    */
   @Override
   public void dispose() {
-    if (browserFunction != null && !browserFunction.isDisposed()) {
+    //todo
+    /* if (browserFunction != null && !browserFunction.isDisposed()) {
       browserFunction.dispose();
       browserFunction = null;
-    }
+    }*/
   }
 
-  private String toValidJavaScriptIdentifier(String name) {
+  private String toValidJavaScriptIdentifier(final String name) {
     if (Pattern.matches("^\\d.+", name)) {
       throw new IllegalArgumentException(String.format("JavaScript identifier must not start with a digit. [name=%s]", name));
     }

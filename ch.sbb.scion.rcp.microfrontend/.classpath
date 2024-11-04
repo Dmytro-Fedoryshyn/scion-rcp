@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/jxbrowser-8.1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jxbrowser-swt-8.1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jxbrowser-win64-8.1.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path=".apt_generated">
+		<attributes>
+			<attribute name="optional" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/dimon/Downloads/lombok.jar"/>
+	<classpathentry kind="lib" path="L:/rcp/scion-rcp/ch.sbb.scion.rcp.microfrontend/lib/jxbrowser-8.1.0.jar"/>
+	<classpathentry kind="lib" path="L:/rcp/scion-rcp/ch.sbb.scion.rcp.microfrontend/lib/jxbrowser-swt-8.1.0.jar"/>
+	<classpathentry kind="lib" path="L:/rcp/scion-rcp/ch.sbb.scion.rcp.microfrontend/lib/jxbrowser-win64-8.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

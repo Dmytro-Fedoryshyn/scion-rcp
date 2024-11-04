@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.pde.ui.RuntimeWorkbench">
     <setAttribute key="additional_plugins">
-        <setEntry value="org.apache.felix.scr:2.1.24.v20200924-1939:default:true:2:true"/>
-        <setEntry value="org.eclipse.core.runtime:3.25.0.v20220506-1157:default:true:default:true"/>
-        <setEntry value="org.eclipse.equinox.common:3.16.100.v20220315-2327:default:true:2:true"/>
-        <setEntry value="org.eclipse.equinox.event:1.6.100.v20211021-1418:default:true:2:true"/>
-        <setEntry value="org.eclipse.equinox.simpleconfigurator:1.4.0.v20210315-2228:default:true:1:true"/>
+        <setEntry value="org.apache.felix.scr:2.2.12:default:true:2:true"/>
+        <setEntry value="org.eclipse.core.runtime:3.31.100.v20240524-2010:default:true:default:true"/>
+        <setEntry value="org.eclipse.equinox.common:3.19.100.v20240524-2011:default:true:2:true"/>
+        <setEntry value="org.eclipse.equinox.event:1.7.100.v20240321-1445:default:true:2:true"/>
+        <setEntry value="org.eclipse.equinox.simpleconfigurator:1.5.300.v20240424-1301:default:true:1:true"/>
     </setAttribute>
     <booleanAttribute key="append.args" value="true"/>
     <stringAttribute key="application" value="org.eclipse.e4.ui.workbench.swt.E4Application"/>
@@ -23,9 +23,11 @@
     <stringAttribute key="featureDefaultLocation" value="workspace"/>
     <stringAttribute key="featurePluginResolution" value="workspace"/>
     <booleanAttribute key="includeOptional" value="false"/>
-    <stringAttribute key="location" value="${workspace_loc}/../runtime-ch.sbb.scion.rcp.microfrontend.app.demo.product"/>
+    <stringAttribute key="location" value="${workspace_loc}\..\runtime-ch.sbb.scion.rcp.microfrontend.app.demo.product"/>
+    <booleanAttribute key="org.eclipse.debug.core.ATTR_FORCE_SYSTEM_CONSOLE_ENCODING" value="false"/>
     <booleanAttribute key="org.eclipse.jdt.launching.ATTR_ATTR_USE_ARGFILE" value="false"/>
-    <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JRE-1.1"/>
+    <booleanAttribute key="org.eclipse.jdt.launching.ATTR_SHOW_CODEDETAILS_IN_EXCEPTION_MESSAGES" value="true"/>
+    <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -clearPersistedState"/>
     <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
     <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dorg.eclipse.swt.graphics.Resource.reportNonDisposed=true -Dorg.eclipse.swt.browser.EdgeArgs=--allow-insecure-localhost"/>
@@ -37,7 +39,6 @@
         <setEntry value="org.eclipse.e4.rcp:default"/>
         <setEntry value="org.eclipse.emf.common:default"/>
         <setEntry value="org.eclipse.emf.ecore:default"/>
-        <setEntry value="org.eclipse.equinox.executable:default"/>
         <setEntry value="org.eclipse.rcp:default"/>
     </setAttribute>
     <setAttribute key="selected_target_bundles">
