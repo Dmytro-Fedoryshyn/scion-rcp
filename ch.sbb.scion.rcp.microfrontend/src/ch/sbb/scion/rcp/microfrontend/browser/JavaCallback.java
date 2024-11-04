@@ -7,7 +7,9 @@ import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 import org.eclipse.swt.browser.BrowserFunction;
+import org.eclipse.swt.widgets.Display;
 
+import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.js.JsFunctionCallback;
 import com.teamdev.jxbrowser.js.JsObject;
 import com.teamdev.jxbrowser.view.swt.BrowserView;
@@ -25,6 +27,7 @@ public class JavaCallback implements IDisposable {
 
   private final CompletableFuture<BrowserView> whenBrowser;
   private final Consumer<Object[]> callback;
+  private Browser browser;
 
   public JavaCallback(final BrowserView browser, final Consumer<Object[]> callback) {
     this(CompletableFuture.completedFuture(browser), callback);
@@ -53,29 +56,32 @@ public class JavaCallback implements IDisposable {
   }
 
   public CompletableFuture<JavaCallback> install(final boolean once) {
-    return whenBrowser.thenAccept(browser -> {
-      // Define a JavaScript function in the browser context
-      JsObject window = browser.getBrowser().mainFrame().orElseThrow().executeJavaScript("window");
-
-      JsFunctionCallback callback = new JsFunctionCallback() {
+    return whenBrowser.thenAccept(browserView -> {
+      // Retrieve main frame's window object in JavaScript
+      JsObject window = browserView.getBrowser().mainFrame().orElseThrow().executeJavaScript("window");
+      this.browser = browserView.getBrowser();
+      // Define the JsFunctionCallback to handle invocations from JavaScript
+      JsFunctionCallback c = new JsFunctionCallback() {
 
         @Override
         public Object invoke(final Object... args) {
           if (once) {
-            // Remove the binding if it should only be used once
+            // Remove the callback from the JavaScript context after one use
             window.removeProperty(name);
           }
 
-          // Execute callback asynchronously in the Java context
-          browser.getDisplay().asyncExec(() -> invoke(args));
+          // Execute the callback in SWT's display thread
+          Display display = browserView.getDisplay();
+          display.asyncExec(() -> {
+            callback.accept(args);
+          });
 
           return Boolean.TRUE;
         }
       };
 
-      window.putProperty(name, callback);
-
-      // Bind the JavaScript function to the window object
+      // Bind the JavaScript function to the `window` object
+      window.putProperty(name, c);
 
     }).thenApply(browserView -> this);
   }
@@ -96,6 +102,8 @@ public class JavaCallback implements IDisposable {
    */
   @Override
   public void dispose() {
+    // JsObject window = browser.mainFrame().orElseThrow().executeJavaScript("window");
+    //window.removeProperty(name);
     //todo
     /* if (browserFunction != null && !browserFunction.isDisposed()) {
       browserFunction.dispose();
