@@ -14,7 +14,7 @@ import org.eclipse.swt.browser.ProgressEvent;
 import org.eclipse.swt.widgets.Display;
 
 /**
- * TODO Klasse dokumentieren
+ * SWT Browser implementation of the {@link AbstractBrowser} interface.
  */
 public class SwtBrowser implements AbstractBrowser {
 

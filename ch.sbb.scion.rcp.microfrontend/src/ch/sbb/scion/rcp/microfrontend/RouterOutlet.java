@@ -74,7 +74,7 @@ public final class RouterOutlet extends Composite implements DisposeListener {
 
     routerOutletProxy = new RouterOutletProxy(outletName);
 
-    browser = BrowserFactory.createSwtBrowser(this);
+    browser = BrowserFactory.createJxBrowser(this);
     browser.onLoadFinished(new Runnable() {
 
       @Override

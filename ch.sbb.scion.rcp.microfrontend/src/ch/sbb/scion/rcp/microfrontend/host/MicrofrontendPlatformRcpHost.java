@@ -75,7 +75,7 @@ public class MicrofrontendPlatformRcpHost {
         new Resource(Resources.get("js/helpers.js"), "application/javascript", "utf-8"))).start();
 
     // Create the browser and
-    hostBrowser = BrowserFactory.createSwtBrowser(shell);
+    hostBrowser = BrowserFactory.createJxBrowser(shell);
 
     hostBrowser.onLoadFinished(new Runnable() {
 
