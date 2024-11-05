@@ -9,12 +9,12 @@ import java.util.regex.Pattern;
 import org.eclipse.swt.browser.BrowserFunction;
 import org.eclipse.swt.widgets.Display;
 
-import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.js.JsFunctionCallback;
 import com.teamdev.jxbrowser.js.JsObject;
-import com.teamdev.jxbrowser.view.swt.BrowserView;
 
+import ch.sbb.scion.rcp.microfrontend.AbstractBrowser;
 import ch.sbb.scion.rcp.microfrontend.IDisposable;
+import ch.sbb.scion.rcp.microfrontend.VarArgFunction;
 
 /**
  * Allows interaction from JavaScript with Java code. Injects a function to the {Window} of the currently loaded document that can be
@@ -25,15 +25,14 @@ public class JavaCallback implements IDisposable {
 
   public final String name;
 
-  private final CompletableFuture<BrowserView> whenBrowser;
+  private final CompletableFuture<AbstractBrowser> whenBrowser;
   private final Consumer<Object[]> callback;
-  private Browser browser;
 
-  public JavaCallback(final BrowserView browser, final Consumer<Object[]> callback) {
+  public JavaCallback(final AbstractBrowser browser, final Consumer<Object[]> callback) {
     this(CompletableFuture.completedFuture(browser), callback);
   }
 
-  public JavaCallback(final CompletableFuture<BrowserView> whenBrowser, final Consumer<Object[]> callback) {
+  public JavaCallback(final CompletableFuture<AbstractBrowser> whenBrowser, final Consumer<Object[]> callback) {
     this.whenBrowser = whenBrowser;
     this.name = toValidJavaScriptIdentifier("__scion_rcp_browserfunction_" + UUID.randomUUID());
     this.callback = callback;
@@ -58,30 +57,36 @@ public class JavaCallback implements IDisposable {
   public CompletableFuture<JavaCallback> install(final boolean once) {
     return whenBrowser.thenAccept(browserView -> {
       // Retrieve main frame's window object in JavaScript
-      JsObject window = browserView.getBrowser().mainFrame().orElseThrow().executeJavaScript("window");
-      this.browser = browserView.getBrowser();
-      // Define the JsFunctionCallback to handle invocations from JavaScript
-      JsFunctionCallback c = new JsFunctionCallback() {
+      browserView.addFunction(new VarArgFunction() {
 
         @Override
-        public Object invoke(final Object... args) {
-          if (once) {
-            // Remove the callback from the JavaScript context after one use
-            window.removeProperty(name);
-          }
+        public void apply(final Object... o) {
+          JsObject window = (JsObject) browserView.executeJavaScript("window");
+          // Define the JsFunctionCallback to handle invocations from JavaScript
+          JsFunctionCallback c = new JsFunctionCallback() {
 
-          // Execute the callback in SWT's display thread
-          Display display = browserView.getDisplay();
-          display.asyncExec(() -> {
-            callback.accept(args);
-          });
+            @Override
+            public Object invoke(final Object... args) {
+              if (once) {
+                // Remove the callback from the JavaScript context after one use
+                window.removeProperty(name);
+              }
 
-          return Boolean.TRUE;
+              // Execute the callback in SWT's display thread
+              Display display = browserView.getDisplay();
+              display.asyncExec(() -> {
+                callback.accept(args);
+              });
+
+              return Boolean.TRUE;
+            }
+          };
+
+          // Bind the JavaScript function to the `window` object
+          window.putProperty(name, c);
         }
-      };
 
-      // Bind the JavaScript function to the `window` object
-      window.putProperty(name, c);
+      }, name, once, callback);
 
     }).thenApply(browserView -> this);
   }

@@ -8,8 +8,7 @@ import java.lang.reflect.Type;
 
 import org.eclipse.core.runtime.Platform;
 
-import com.teamdev.jxbrowser.view.swt.BrowserView;
-
+import ch.sbb.scion.rcp.microfrontend.AbstractBrowser;
 import ch.sbb.scion.rcp.microfrontend.IDisposable;
 import ch.sbb.scion.rcp.microfrontend.MessageClient;
 import ch.sbb.scion.rcp.microfrontend.internal.ParameterizedType;
@@ -25,11 +24,11 @@ import ch.sbb.scion.rcp.microfrontend.subscriber.ISubscription;
  */
 public class RxJsObservable<T> {
 
-  private final CompletableFuture<BrowserView> whenBrowser;
+  private final CompletableFuture<AbstractBrowser> whenBrowser;
   private final Type clazz;
   private final String rxjsObservableIIFE;
 
-  public RxJsObservable(final CompletableFuture<BrowserView> browser, final String rxjsObservableIIFE, final Type clazz) {
+  public RxJsObservable(final CompletableFuture<AbstractBrowser> browser, final String rxjsObservableIIFE, final Type clazz) {
     this.whenBrowser = browser;
     this.rxjsObservableIIFE = rxjsObservableIIFE;
     this.clazz = clazz;

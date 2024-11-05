@@ -1,7 +1,6 @@
 package ch.sbb.scion.rcp.microfrontend.host;
 
-import com.teamdev.jxbrowser.view.swt.BrowserView;
-
+import ch.sbb.scion.rcp.microfrontend.AbstractBrowser;
 import ch.sbb.scion.rcp.microfrontend.browser.JavaScriptExecutor;
 import ch.sbb.scion.rcp.microfrontend.interceptor.InterceptorChain;
 import ch.sbb.scion.rcp.microfrontend.model.Message;
@@ -11,10 +10,10 @@ import ch.sbb.scion.rcp.microfrontend.script.Scripts.Helpers;
 
 class InterceptorChainImpl implements InterceptorChain {
 
-  private final BrowserView hostBrowser;
+  private final AbstractBrowser hostBrowser;
   private final String nextCallbackName;
 
-  InterceptorChainImpl(final BrowserView hostBrowser, final String nextCallbackName) {
+  InterceptorChainImpl(final AbstractBrowser hostBrowser, final String nextCallbackName) {
     this.hostBrowser = hostBrowser;
     this.nextCallbackName = nextCallbackName;
   }
