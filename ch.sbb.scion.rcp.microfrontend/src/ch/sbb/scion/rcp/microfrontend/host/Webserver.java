@@ -1,5 +1,10 @@
 package ch.sbb.scion.rcp.microfrontend.host;
 
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.regex.Pattern;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,10 +13,6 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
-import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.Platform;
@@ -25,11 +26,11 @@ public class Webserver {
   private static final ILog LOGGER = Platform.getLog(Webserver.class);
   private static final Resource NULL_RESOURCE = new Resource(null, null, null);
 
-  private Map<String, Resource> resources;
+  private final Map<String, Resource> resources;
   private ExecutorService executor;
   private ServerSocket serverSocket;
 
-  public Webserver(Map<String, Resource> resources) {
+  public Webserver(final Map<String, Resource> resources) {
     this.resources = resources;
   }
 
@@ -52,7 +53,7 @@ public class Webserver {
     return this;
   }
 
-  private void handleRequest(Socket socket) throws IOException {
+  private void handleRequest(final Socket socket) throws IOException {
     var resource = findRequestedResource(socket);
     try (var out = new PrintWriter(socket.getOutputStream())) {
       if (resource == NULL_RESOURCE) {
@@ -74,14 +75,14 @@ public class Webserver {
 
   private ServerSocket createServerSocket() {
     try {
-      return new ServerSocket(0, 200, InetAddress.getLoopbackAddress());
+      return new ServerSocket(0, 200, InetAddress.getByName("0.0.0.0"));
     }
     catch (IOException e) {
       throw new RuntimeException("Failed to start HTTP server.", e);
     }
   }
 
-  private Resource findRequestedResource(Socket socket) throws IOException {
+  private Resource findRequestedResource(final Socket socket) throws IOException {
     var in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     var httpRequestLine = in.readLine();
     if (httpRequestLine == null) {
@@ -134,7 +135,7 @@ public class Webserver {
     public String contentType;
     public String encoding;
 
-    public Resource(URL url, String contentType, String encoding) {
+    public Resource(final URL url, final String contentType, final String encoding) {
       this.url = url;
       this.contentType = contentType;
       this.encoding = encoding;
