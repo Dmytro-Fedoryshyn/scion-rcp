@@ -56,7 +56,7 @@ public interface AbstractBrowser {
    * @param callback
    *          the callback to execute when the function is called. Must not be null.
    */
-  void addFunction(String name, boolean once, Consumer<Object[]> callback);
+  DisposableFunction addFunction(String name, boolean once, Consumer<Object[]> callback);
 
   /**
    * Returns the display associated with this browser.

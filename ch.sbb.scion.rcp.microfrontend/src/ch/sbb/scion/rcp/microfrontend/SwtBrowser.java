@@ -52,7 +52,7 @@ public class SwtBrowser implements AbstractBrowser {
   }
 
   @Override
-  public void addFunction(final String name, final boolean once, final Consumer<Object[]> callback) {
+  public DisposableFunction addFunction(final String name, final boolean once, final Consumer<Object[]> callback) {
     BrowserFunction browserFunction = new BrowserFunction(browser, name) {
 
       @Override
@@ -64,6 +64,14 @@ public class SwtBrowser implements AbstractBrowser {
         // Otherwise, creating a new {@link Browser} instance in the callback would lead to a deadlock.
         browser.getDisplay().asyncExec(() -> callback.accept(arguments));
         return Boolean.TRUE;
+      }
+    };
+
+    return new DisposableFunction() {
+
+      @Override
+      public void dispose() {
+        browserFunction.dispose();
       }
     };
   }

@@ -54,7 +54,7 @@ public class JxBrowser implements AbstractBrowser {
   }
 
   @Override
-  public void addFunction(final String name, final boolean once, final Consumer<Object[]> callback) {
+  public DisposableFunction addFunction(final String name, final boolean once, final Consumer<Object[]> callback) {
     JsObject window = browserView.getBrowser().mainFrame().orElseThrow().executeJavaScript("window");
     // Define the JsFunctionCallback to handle invocations from JavaScript
     JsFunctionCallback c = new JsFunctionCallback() {
@@ -78,6 +78,14 @@ public class JxBrowser implements AbstractBrowser {
 
     // Bind the JavaScript function to the `window` object
     window.putProperty(name, c);
+
+    return new DisposableFunction() {
+
+      @Override
+      public void dispose() {
+        window.removeProperty(name);
+      }
+    };
   }
 
   @Override

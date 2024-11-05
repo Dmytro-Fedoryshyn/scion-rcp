@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import org.eclipse.swt.browser.BrowserFunction;
 
 import ch.sbb.scion.rcp.microfrontend.AbstractBrowser;
+import ch.sbb.scion.rcp.microfrontend.DisposableFunction;
 import ch.sbb.scion.rcp.microfrontend.IDisposable;
 
 /**
@@ -22,6 +23,7 @@ public class JavaCallback implements IDisposable {
 
   private final CompletableFuture<AbstractBrowser> whenBrowser;
   private final Consumer<Object[]> callback;
+  private DisposableFunction browserFunction;
 
   public JavaCallback(final AbstractBrowser browser, final Consumer<Object[]> callback) {
     this(CompletableFuture.completedFuture(browser), callback);
@@ -51,7 +53,7 @@ public class JavaCallback implements IDisposable {
 
   public CompletableFuture<JavaCallback> install(final boolean once) {
     return whenBrowser.thenAccept(browserView -> {
-      browserView.addFunction(name, once, callback);
+      browserFunction = browserView.addFunction(name, once, callback);
     }).thenApply(browserView -> this);
   }
 
@@ -71,13 +73,10 @@ public class JavaCallback implements IDisposable {
    */
   @Override
   public void dispose() {
-    // JsObject window = browser.mainFrame().orElseThrow().executeJavaScript("window");
-    //window.removeProperty(name);
-    //todo
-    /* if (browserFunction != null && !browserFunction.isDisposed()) {
+    if (browserFunction != null) {
       browserFunction.dispose();
       browserFunction = null;
-    }*/
+    }
   }
 
   private String toValidJavaScriptIdentifier(final String name) {
