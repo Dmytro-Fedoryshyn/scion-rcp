@@ -21,7 +21,7 @@ import org.osgi.service.component.annotations.Reference;
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
-import com.teamdev.jxbrowser.navigation.event.LoadFinished;
+import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 import com.teamdev.jxbrowser.view.swt.BrowserView;
 
 import ch.sbb.scion.rcp.microfrontend.RouterOutlet;
@@ -85,8 +85,10 @@ public class MicrofrontendPlatformRcpHost {
     // Create the browser and
     hostBrowser = BrowserView.newInstance(shell, browser);
 
-    browser.navigation().on(LoadFinished.class, e -> {
-      startHost(config);
+    browser.navigation().on(FrameLoadFinished.class, e -> {
+      if (e.frame().isMain()) {
+        startHost(config);
+      }
     });
 
     if (!headless) {
