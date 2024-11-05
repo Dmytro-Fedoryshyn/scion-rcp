@@ -7,14 +7,9 @@ import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 import org.eclipse.swt.browser.BrowserFunction;
-import org.eclipse.swt.widgets.Display;
-
-import com.teamdev.jxbrowser.js.JsFunctionCallback;
-import com.teamdev.jxbrowser.js.JsObject;
 
 import ch.sbb.scion.rcp.microfrontend.AbstractBrowser;
 import ch.sbb.scion.rcp.microfrontend.IDisposable;
-import ch.sbb.scion.rcp.microfrontend.VarArgFunction;
 
 /**
  * Allows interaction from JavaScript with Java code. Injects a function to the {Window} of the currently loaded document that can be
@@ -56,38 +51,7 @@ public class JavaCallback implements IDisposable {
 
   public CompletableFuture<JavaCallback> install(final boolean once) {
     return whenBrowser.thenAccept(browserView -> {
-      // Retrieve main frame's window object in JavaScript
-      browserView.addFunction(new VarArgFunction() {
-
-        @Override
-        public void apply(final Object... o) {
-          JsObject window = (JsObject) browserView.executeJavaScript("window");
-          // Define the JsFunctionCallback to handle invocations from JavaScript
-          JsFunctionCallback c = new JsFunctionCallback() {
-
-            @Override
-            public Object invoke(final Object... args) {
-              if (once) {
-                // Remove the callback from the JavaScript context after one use
-                window.removeProperty(name);
-              }
-
-              // Execute the callback in SWT's display thread
-              Display display = browserView.getDisplay();
-              display.asyncExec(() -> {
-                callback.accept(args);
-              });
-
-              return Boolean.TRUE;
-            }
-          };
-
-          // Bind the JavaScript function to the `window` object
-          window.putProperty(name, c);
-        }
-
-      }, name, once, callback);
-
+      browserView.addFunction(name, once, callback);
     }).thenApply(browserView -> this);
   }
 

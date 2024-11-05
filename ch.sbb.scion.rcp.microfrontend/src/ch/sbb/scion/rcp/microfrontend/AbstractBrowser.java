@@ -22,7 +22,7 @@ public interface AbstractBrowser {
 
   boolean isFocusControl();
 
-  void addFunction(VarArgFunction function, String name, boolean once, Consumer<Object[]> callback);
+  void addFunction(String name, boolean once, Consumer<Object[]> callback);
 
   Display getDisplay();
 }

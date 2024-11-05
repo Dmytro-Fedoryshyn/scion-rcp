@@ -11,5 +11,5 @@ package ch.sbb.scion.rcp.microfrontend;
 @FunctionalInterface
 public interface VarArgFunction {
 
-  void apply(Object... o);
+  Object apply(Object... o);
 }

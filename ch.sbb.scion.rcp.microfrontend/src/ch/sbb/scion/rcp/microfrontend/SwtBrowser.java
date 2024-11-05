@@ -52,7 +52,7 @@ public class SwtBrowser implements AbstractBrowser {
   }
 
   @Override
-  public void addFunction(final VarArgFunction function, final String name, final boolean once, final Consumer<Object[]> callback) {
+  public void addFunction(final String name, final boolean once, final Consumer<Object[]> callback) {
     BrowserFunction browserFunction = new BrowserFunction(browser, name) {
 
       @Override
