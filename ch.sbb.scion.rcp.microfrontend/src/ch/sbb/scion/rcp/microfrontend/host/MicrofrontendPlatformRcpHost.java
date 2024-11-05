@@ -16,9 +16,10 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
-import ch.sbb.scion.rcp.microfrontend.AbstractBrowser;
-import ch.sbb.scion.rcp.microfrontend.BrowserFactory;
 import ch.sbb.scion.rcp.microfrontend.RouterOutlet;
+import ch.sbb.scion.rcp.microfrontend.browser.AbstractBrowser;
+import ch.sbb.scion.rcp.microfrontend.browser.BrowserFactory;
+import ch.sbb.scion.rcp.microfrontend.browser.BrowserType;
 import ch.sbb.scion.rcp.microfrontend.browser.JavaCallback;
 import ch.sbb.scion.rcp.microfrontend.browser.JavaScriptExecutor;
 import ch.sbb.scion.rcp.microfrontend.host.IntentInterceptorInstaller.IntentInterceptorDescriptor;
@@ -75,15 +76,9 @@ public class MicrofrontendPlatformRcpHost {
         new Resource(Resources.get("js/helpers.js"), "application/javascript", "utf-8"))).start();
 
     // Create the browser and
-    hostBrowser = BrowserFactory.createJxBrowser(shell);
+    hostBrowser = BrowserFactory.createBrowser(BrowserType.JXBROWSER, shell);
 
-    hostBrowser.onLoadFinished(new Runnable() {
-
-      @Override
-      public void run() {
-        startHost(config);
-      }
-    });
+    hostBrowser.onLoadFinished(() -> startHost(config));
 
     if (!headless) {
       shell.open();

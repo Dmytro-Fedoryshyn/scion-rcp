@@ -4,7 +4,7 @@ import java.lang.reflect.Type;
 
 import org.osgi.service.component.annotations.Component;
 
-import ch.sbb.scion.rcp.microfrontend.AbstractBrowser;
+import ch.sbb.scion.rcp.microfrontend.browser.AbstractBrowser;
 import ch.sbb.scion.rcp.microfrontend.browser.JavaCallback;
 import ch.sbb.scion.rcp.microfrontend.browser.JavaScriptExecutor;
 import ch.sbb.scion.rcp.microfrontend.interceptor.IntentInterceptor;

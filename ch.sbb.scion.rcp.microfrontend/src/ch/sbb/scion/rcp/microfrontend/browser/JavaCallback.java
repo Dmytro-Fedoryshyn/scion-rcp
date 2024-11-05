@@ -8,8 +8,6 @@ import java.util.regex.Pattern;
 
 import org.eclipse.swt.browser.BrowserFunction;
 
-import ch.sbb.scion.rcp.microfrontend.AbstractBrowser;
-import ch.sbb.scion.rcp.microfrontend.DisposableFunction;
 import ch.sbb.scion.rcp.microfrontend.IDisposable;
 
 /**

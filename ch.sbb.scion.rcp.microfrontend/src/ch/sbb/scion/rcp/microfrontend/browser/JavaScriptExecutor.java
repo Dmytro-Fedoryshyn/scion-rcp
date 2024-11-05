@@ -4,7 +4,6 @@ import java.util.concurrent.CompletableFuture;
 
 import org.eclipse.core.runtime.Platform;
 
-import ch.sbb.scion.rcp.microfrontend.AbstractBrowser;
 import ch.sbb.scion.rcp.microfrontend.script.Script;
 
 public class JavaScriptExecutor {

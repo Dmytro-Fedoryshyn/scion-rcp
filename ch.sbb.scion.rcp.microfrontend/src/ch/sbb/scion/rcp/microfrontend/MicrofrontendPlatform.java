@@ -4,6 +4,7 @@ import java.util.concurrent.CompletableFuture;
 
 import java.lang.reflect.Type;
 
+import ch.sbb.scion.rcp.microfrontend.browser.AbstractBrowser;
 import ch.sbb.scion.rcp.microfrontend.interceptor.IntentInterceptor;
 import ch.sbb.scion.rcp.microfrontend.interceptor.MessageInterceptor;
 import ch.sbb.scion.rcp.microfrontend.model.MicrofrontendPlatformConfig;

@@ -1,6 +1,6 @@
 package ch.sbb.scion.rcp.microfrontend.host;
 
-import ch.sbb.scion.rcp.microfrontend.AbstractBrowser;
+import ch.sbb.scion.rcp.microfrontend.browser.AbstractBrowser;
 import ch.sbb.scion.rcp.microfrontend.browser.JavaScriptExecutor;
 import ch.sbb.scion.rcp.microfrontend.interceptor.InterceptorChain;
 import ch.sbb.scion.rcp.microfrontend.model.Message;

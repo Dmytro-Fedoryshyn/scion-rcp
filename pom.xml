@@ -80,9 +80,9 @@
 			<layout>p2</layout>
 		</repository>
 		<repository>
-    <id>com.teamdev</id>
-    <url>https://europe-maven.pkg.dev/jxbrowser/releases</url>
-</repository>
+    		<id>com.teamdev</id>
+			<url>https://europe-maven.pkg.dev/jxbrowser/releases</url>
+		</repository>
 	</repositories>
 
 	<modules>
@@ -113,12 +113,11 @@
 	
 	<dependencies>
 
-	<dependency>    <groupId>com.teamdev.jxbrowser</groupId>
-    <artifactId>jxbrowser-cross-platform</artifactId>
-    <version>8.1.0</version>
-    <type>pom</type>
-
-
+	<dependency> 
+	    <groupId>com.teamdev.jxbrowser</groupId>
+    	<artifactId>jxbrowser-cross-platform</artifactId>
+   		<version>8.1.0</version>
+    	<type>pom</type>
 	</dependency>
 	</dependencies>
 

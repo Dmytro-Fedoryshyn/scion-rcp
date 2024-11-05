@@ -3,7 +3,7 @@
  *
  * © Copyright by SBB AG, Alle Rechte vorbehalten
  */
-package ch.sbb.scion.rcp.microfrontend;
+package ch.sbb.scion.rcp.microfrontend.browser;
 
 /**
  * A browser function which should be disposed of to free up resources when no longer needed.

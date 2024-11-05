@@ -8,7 +8,6 @@ import java.lang.reflect.Type;
 
 import org.eclipse.core.runtime.Platform;
 
-import ch.sbb.scion.rcp.microfrontend.AbstractBrowser;
 import ch.sbb.scion.rcp.microfrontend.IDisposable;
 import ch.sbb.scion.rcp.microfrontend.MessageClient;
 import ch.sbb.scion.rcp.microfrontend.internal.ParameterizedType;

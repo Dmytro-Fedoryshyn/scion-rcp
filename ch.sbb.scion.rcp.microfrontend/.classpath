@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry exported="true" kind="lib" path="lib/jxbrowser-8.1.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jxbrowser-swt-8.1.0.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jxbrowser-win64-8.1.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">

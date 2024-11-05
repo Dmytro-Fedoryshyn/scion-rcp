@@ -26,6 +26,10 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
+import ch.sbb.scion.rcp.microfrontend.browser.AbstractBrowser;
+import ch.sbb.scion.rcp.microfrontend.browser.BrowserFactory;
+import ch.sbb.scion.rcp.microfrontend.browser.BrowserType;
+import ch.sbb.scion.rcp.microfrontend.browser.FrameLoadFinishedListener;
 import ch.sbb.scion.rcp.microfrontend.browser.JavaCallback;
 import ch.sbb.scion.rcp.microfrontend.browser.JavaScriptExecutor;
 import ch.sbb.scion.rcp.microfrontend.internal.ContextInjectors;
@@ -74,13 +78,15 @@ public final class RouterOutlet extends Composite implements DisposeListener {
 
     routerOutletProxy = new RouterOutletProxy(outletName);
 
-    browser = BrowserFactory.createJxBrowser(this);
-    browser.onLoadFinished(new Runnable() {
+    browser = BrowserFactory.createBrowser(BrowserType.JXBROWSER, this);
+    browser.addFrameLoadListener(new FrameLoadFinishedListener() {
+
+      final List<IDisposable> disposables = new ArrayList<>();
 
       @Override
-      public void run() {
-        final List<IDisposable> disposables = new ArrayList<>();
-        disposables.forEach(IDisposable::dispose);
+      public void onFrameLoadFinished() {
+        // is invoked when completed loading the app, or when reloading it, e.g., due to
+        // hot code replacement during development
         disposables.clear();
 
         browser.executeJavaScript(Resources.readString("js/helpers.js"));
@@ -134,7 +140,7 @@ public final class RouterOutlet extends Composite implements DisposeListener {
     return routerOutletProxy.onKeystroke(event -> {
       keystrokeTarget.setFocus();
       // Prevent infinite cycle:
-      if (browser.isFocusControl()) {
+      if (browser.isFocused()) {
         throw new IllegalStateException(
             "Browser has focus. Make sure that the keystrokeTarget is not a parent of this SciRouterOutlet and," + //
                 "that the keystrokeTarget can gain focus; i.e., it does not have the SWT.NO_FOCUS style bit set.");

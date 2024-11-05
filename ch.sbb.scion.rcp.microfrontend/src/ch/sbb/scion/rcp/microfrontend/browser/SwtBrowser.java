@@ -3,8 +3,10 @@
  *
  * © Copyright by SBB AG, Alle Rechte vorbehalten
  */
-package ch.sbb.scion.rcp.microfrontend;
+package ch.sbb.scion.rcp.microfrontend.browser;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 import org.eclipse.swt.browser.Browser;
@@ -19,9 +21,11 @@ import org.eclipse.swt.widgets.Display;
 public class SwtBrowser implements AbstractBrowser {
 
   private final Browser browser;
+  private final List<FrameLoadFinishedListener> listeners = new ArrayList<>();
 
   public SwtBrowser(final Browser browser) {
     this.browser = browser;
+
   }
 
   @Override
@@ -47,7 +51,7 @@ public class SwtBrowser implements AbstractBrowser {
   }
 
   @Override
-  public boolean isFocusControl() {
+  public boolean isFocused() {
     return browser.isFocusControl();
   }
 
@@ -80,4 +84,22 @@ public class SwtBrowser implements AbstractBrowser {
   public Display getDisplay() {
     return browser.getDisplay();
   };
+
+  @Override
+  public void addFrameLoadListener(final FrameLoadFinishedListener listener) {
+    listeners.add(listener);
+  }
+
+  @Override
+  public void removeFrameLoadListener(final FrameLoadFinishedListener listener) {
+    listeners.remove(listener);
+
+  }
+
+  @Override
+  public void notifyFrameLoadFinished() {
+    for (FrameLoadFinishedListener listener : listeners) {
+      listener.onFrameLoadFinished();
+    }
+  }
 }

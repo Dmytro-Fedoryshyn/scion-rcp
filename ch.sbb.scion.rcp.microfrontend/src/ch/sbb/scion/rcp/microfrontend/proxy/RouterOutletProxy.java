@@ -12,9 +12,9 @@ import javax.inject.Inject;
 
 import org.eclipse.swt.widgets.Event;
 
-import ch.sbb.scion.rcp.microfrontend.AbstractBrowser;
 import ch.sbb.scion.rcp.microfrontend.IDisposable;
 import ch.sbb.scion.rcp.microfrontend.RouterOutlet;
+import ch.sbb.scion.rcp.microfrontend.browser.AbstractBrowser;
 import ch.sbb.scion.rcp.microfrontend.browser.JavaCallback;
 import ch.sbb.scion.rcp.microfrontend.browser.JavaScriptExecutor;
 import ch.sbb.scion.rcp.microfrontend.host.MicrofrontendPlatformRcpHost;

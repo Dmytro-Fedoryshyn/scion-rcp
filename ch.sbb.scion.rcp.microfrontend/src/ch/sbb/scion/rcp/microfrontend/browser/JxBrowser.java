@@ -3,8 +3,10 @@
  *
  * © Copyright by SBB AG, Alle Rechte vorbehalten
  */
-package ch.sbb.scion.rcp.microfrontend;
+package ch.sbb.scion.rcp.microfrontend.browser;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 import org.eclipse.swt.widgets.Display;
@@ -22,10 +24,17 @@ public class JxBrowser implements AbstractBrowser {
 
   private final BrowserView browserView;
   private final Browser browser;
+  private final List<FrameLoadFinishedListener> listeners = new ArrayList<>();
 
   public JxBrowser(final BrowserView browserView) {
     this.browserView = browserView;
     this.browser = browserView.getBrowser();
+
+    browser.navigation().on(FrameLoadFinished.class, e -> {
+      if (e.frame().isMain()) {
+        notifyFrameLoadFinished();
+      }
+    });
   }
 
   @Override
@@ -49,7 +58,7 @@ public class JxBrowser implements AbstractBrowser {
   }
 
   @Override
-  public boolean isFocusControl() {
+  public boolean isFocused() {
     return browserView.isFocusControl();
   }
 
@@ -91,6 +100,24 @@ public class JxBrowser implements AbstractBrowser {
   @Override
   public Display getDisplay() {
     return browserView.getDisplay();
+  }
+
+  @Override
+  public void addFrameLoadListener(final FrameLoadFinishedListener listener) {
+    listeners.add(listener);
+  }
+
+  @Override
+  public void removeFrameLoadListener(final FrameLoadFinishedListener listener) {
+    listeners.remove(listener);
+
+  }
+
+  @Override
+  public void notifyFrameLoadFinished() {
+    for (FrameLoadFinishedListener listener : listeners) {
+      listener.onFrameLoadFinished();
+    }
   }
 
 }

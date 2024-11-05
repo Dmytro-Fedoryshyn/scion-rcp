@@ -3,7 +3,7 @@
  *
  * © Copyright by SBB AG, Alle Rechte vorbehalten
  */
-package ch.sbb.scion.rcp.microfrontend;
+package ch.sbb.scion.rcp.microfrontend.browser;
 
 import java.util.function.Consumer;
 
@@ -13,6 +13,12 @@ import org.eclipse.swt.widgets.Display;
  * A web browser control, which provides essential features for working with web content.
  */
 public interface AbstractBrowser {
+
+  void addFrameLoadListener(FrameLoadFinishedListener listener);
+
+  void removeFrameLoadListener(FrameLoadFinishedListener listener);
+
+  void notifyFrameLoadFinished();
 
   /**
    * Loads the specified URL in the browser.
@@ -44,7 +50,7 @@ public interface AbstractBrowser {
    *
    * @return true if the browser has focus; false otherwise.
    */
-  boolean isFocusControl();
+  boolean isFocused();
 
   /**
    * Adds a JavaScript function that can be called from JavaScript code.

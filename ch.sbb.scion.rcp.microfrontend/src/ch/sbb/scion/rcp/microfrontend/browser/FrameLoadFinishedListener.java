@@ -3,13 +3,12 @@
  *
  * © Copyright by SBB AG, Alle Rechte vorbehalten
  */
-package ch.sbb.scion.rcp.microfrontend;
+package ch.sbb.scion.rcp.microfrontend.browser;
 
 /**
  * TODO Klasse dokumentieren
  */
-@FunctionalInterface
-public interface VarArgFunction {
+public interface FrameLoadFinishedListener {
 
-  Object apply(Object... o);
+  public void onFrameLoadFinished();
 }
