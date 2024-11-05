@@ -12,12 +12,27 @@ import org.eclipse.swt.widgets.Display;
 /**
  * A web browser control, which provides essential features for working with web content.
  */
-public interface AbstractBrowser {
+public interface Browser {
 
+  /**
+   * Adds a listener to be notified when a frame finishes loading in the browser.
+   *
+   * @param listener
+   *          the listener to be added. Must not be null.
+   */
   void addFrameLoadListener(FrameLoadFinishedListener listener);
 
+  /**
+   * Removes a previously added frame load listener.
+   *
+   * @param listener
+   *          the listener to be removed. Must not be null.
+   */
   void removeFrameLoadListener(FrameLoadFinishedListener listener);
 
+  /**
+   * Notifies that a frame has finished loading. This method should be called to trigger frame load completion events.
+   */
   void notifyFrameLoadFinished();
 
   /**

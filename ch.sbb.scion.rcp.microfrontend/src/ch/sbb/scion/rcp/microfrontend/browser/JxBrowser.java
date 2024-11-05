@@ -18,9 +18,9 @@ import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 import com.teamdev.jxbrowser.view.swt.BrowserView;
 
 /**
- * JxBrowser implementation of the {@link AbstractBrowser} interface.
+ * JxBrowser implementation of the {@link Browser} interface.
  */
-public class JxBrowser implements AbstractBrowser {
+public class JxBrowser implements ch.sbb.scion.rcp.microfrontend.browser.Browser {
 
   private final BrowserView browserView;
   private final Browser browser;

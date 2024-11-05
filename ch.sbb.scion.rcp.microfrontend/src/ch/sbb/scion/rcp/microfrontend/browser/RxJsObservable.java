@@ -23,11 +23,11 @@ import ch.sbb.scion.rcp.microfrontend.subscriber.ISubscription;
  */
 public class RxJsObservable<T> {
 
-  private final CompletableFuture<AbstractBrowser> whenBrowser;
+  private final CompletableFuture<Browser> whenBrowser;
   private final Type clazz;
   private final String rxjsObservableIIFE;
 
-  public RxJsObservable(final CompletableFuture<AbstractBrowser> browser, final String rxjsObservableIIFE, final Type clazz) {
+  public RxJsObservable(final CompletableFuture<Browser> browser, final String rxjsObservableIIFE, final Type clazz) {
     this.whenBrowser = browser;
     this.rxjsObservableIIFE = rxjsObservableIIFE;
     this.clazz = clazz;

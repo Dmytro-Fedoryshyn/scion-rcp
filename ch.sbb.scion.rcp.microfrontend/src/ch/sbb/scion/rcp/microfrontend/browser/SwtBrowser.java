@@ -16,9 +16,9 @@ import org.eclipse.swt.browser.ProgressEvent;
 import org.eclipse.swt.widgets.Display;
 
 /**
- * SWT Browser implementation of the {@link AbstractBrowser} interface.
+ * SWT Browser implementation of the {@link Browser} interface.
  */
-public class SwtBrowser implements AbstractBrowser {
+public class SwtBrowser implements ch.sbb.scion.rcp.microfrontend.browser.Browser {
 
   private final Browser browser;
   private final List<FrameLoadFinishedListener> listeners = new ArrayList<>();

@@ -4,7 +4,7 @@ import java.lang.reflect.Type;
 
 import org.osgi.service.component.annotations.Component;
 
-import ch.sbb.scion.rcp.microfrontend.browser.AbstractBrowser;
+import ch.sbb.scion.rcp.microfrontend.browser.Browser;
 import ch.sbb.scion.rcp.microfrontend.browser.JavaCallback;
 import ch.sbb.scion.rcp.microfrontend.browser.JavaScriptExecutor;
 import ch.sbb.scion.rcp.microfrontend.interceptor.MessageInterceptor;
@@ -28,7 +28,7 @@ public class MessageInterceptorInstaller {
   /**
    * Installs given message interceptor.
    */
-  public <T> void install(final MessageInterceptorDescriptor<T> interceptorDescriptor, final AbstractBrowser hostBrowser) {
+  public <T> void install(final MessageInterceptorDescriptor<T> interceptorDescriptor, final Browser hostBrowser) {
     createJavaInterceptorCallback(interceptorDescriptor, hostBrowser).install()
         .thenAccept(callback -> registerInterceptor(callback, interceptorDescriptor, hostBrowser));
   }
@@ -37,7 +37,7 @@ public class MessageInterceptorInstaller {
    * Registers the passed interceptor in the SCION Microfrontend Platform. Intercepted messages are delegated to the passed callback.
    */
   private <T> void registerInterceptor(final JavaCallback interceptorCallback, final MessageInterceptorDescriptor<T> interceptorDescriptor,
-      final AbstractBrowser hostBrowser) {
+      final Browser hostBrowser) {
     new JavaScriptExecutor(hostBrowser, Resources.readString("js/host/register-message-interceptor.js"))
         .replacePlaceholder("interceptorCallback", interceptorCallback.name)
         .replacePlaceholder("topic", interceptorDescriptor.topic, Flags.ToJson).replacePlaceholder("refs.Beans", Refs.Beans)
@@ -50,7 +50,7 @@ public class MessageInterceptorInstaller {
    * Creates the Java callback for intercepting messages.
    */
   private <T> JavaCallback createJavaInterceptorCallback(final MessageInterceptorDescriptor<T> interceptorDescriptor,
-      final AbstractBrowser hostBrowser) {
+      final Browser hostBrowser) {
     return new JavaCallback(hostBrowser, args -> {
       TopicMessage<T> message = GsonFactory.create().fromJson((String) args[0],
           new ParameterizedType(TopicMessage.class, interceptorDescriptor.payloadClazz));

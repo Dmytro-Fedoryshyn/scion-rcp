@@ -8,16 +8,16 @@ import ch.sbb.scion.rcp.microfrontend.script.Script;
 
 public class JavaScriptExecutor {
 
-  private final CompletableFuture<AbstractBrowser> browser;
+  private final CompletableFuture<Browser> browser;
   private boolean logToConsole;
   private boolean asyncFunction;
   private final Script browserScript;
 
-  public JavaScriptExecutor(final AbstractBrowser browser, final String script) {
+  public JavaScriptExecutor(final Browser browser, final String script) {
     this(CompletableFuture.completedFuture(browser), script);
   }
 
-  public JavaScriptExecutor(final CompletableFuture<AbstractBrowser> browser, final String script) {
+  public JavaScriptExecutor(final CompletableFuture<Browser> browser, final String script) {
     this.browser = browser;
     this.browserScript = new Script(script);
   }

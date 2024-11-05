@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Event;
 
 import ch.sbb.scion.rcp.microfrontend.IDisposable;
 import ch.sbb.scion.rcp.microfrontend.RouterOutlet;
-import ch.sbb.scion.rcp.microfrontend.browser.AbstractBrowser;
+import ch.sbb.scion.rcp.microfrontend.browser.Browser;
 import ch.sbb.scion.rcp.microfrontend.browser.JavaCallback;
 import ch.sbb.scion.rcp.microfrontend.browser.JavaScriptExecutor;
 import ch.sbb.scion.rcp.microfrontend.host.MicrofrontendPlatformRcpHost;
@@ -32,7 +32,7 @@ import ch.sbb.scion.rcp.microfrontend.script.Scripts.Refs;
 public class RouterOutletProxy {
 
   private final String outletId;
-  private final CompletableFuture<AbstractBrowser> whenOutlet;
+  private final CompletableFuture<Browser> whenOutlet;
   private final List<Consumer<String>> outletToProxyMessageListeners = new CopyOnWriteArrayList<>();
   private final List<Consumer<Event>> outletToProxyKeystrokeListeners = new ArrayList<>();
   private final List<Consumer<Boolean>> outletToProxyFocusWithinListeners = new ArrayList<>();

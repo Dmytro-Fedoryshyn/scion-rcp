@@ -26,7 +26,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import ch.sbb.scion.rcp.microfrontend.browser.AbstractBrowser;
+import ch.sbb.scion.rcp.microfrontend.browser.Browser;
 import ch.sbb.scion.rcp.microfrontend.browser.BrowserFactory;
 import ch.sbb.scion.rcp.microfrontend.browser.BrowserType;
 import ch.sbb.scion.rcp.microfrontend.browser.FrameLoadFinishedListener;
@@ -50,7 +50,7 @@ public final class RouterOutlet extends Composite implements DisposeListener {
   private static final boolean BRIDGE_LOGGER_ENABLED = false;
 
   private final RouterOutletProxy routerOutletProxy;
-  private final AbstractBrowser browser;
+  private final Browser browser;
   private URL url;
   private final IDisposable navigator;
   private final IDisposable keystrokeDispatcher;

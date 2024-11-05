@@ -17,7 +17,7 @@ import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 import ch.sbb.scion.rcp.microfrontend.RouterOutlet;
-import ch.sbb.scion.rcp.microfrontend.browser.AbstractBrowser;
+import ch.sbb.scion.rcp.microfrontend.browser.Browser;
 import ch.sbb.scion.rcp.microfrontend.browser.BrowserFactory;
 import ch.sbb.scion.rcp.microfrontend.browser.BrowserType;
 import ch.sbb.scion.rcp.microfrontend.browser.JavaCallback;
@@ -48,8 +48,8 @@ public class MicrofrontendPlatformRcpHost {
   private final List<MessageInterceptorDescriptor<?>> messageInterceptors = new ArrayList<>();
   private final List<IntentInterceptorDescriptor<?>> intentInterceptors = new ArrayList<>();
 
-  public AbstractBrowser hostBrowser;
-  public CompletableFuture<AbstractBrowser> whenHostBrowser = new CompletableFuture<>();
+  public Browser hostBrowser;
+  public CompletableFuture<Browser> whenHostBrowser = new CompletableFuture<>();
 
   @Reference
   private MessageInterceptorInstaller messageInterceptorInstaller;
@@ -62,7 +62,7 @@ public class MicrofrontendPlatformRcpHost {
    *
    * @see "https://scion-microfrontend-platform-api.vercel.app/classes/MicrofrontendPlatformHost.html#start"
    */
-  public CompletableFuture<AbstractBrowser> start(final MicrofrontendPlatformConfig config, final boolean headless) {
+  public CompletableFuture<Browser> start(final MicrofrontendPlatformConfig config, final boolean headless) {
     // Create the shell
     shell = new Shell(Display.getDefault());
     shell.setLayout(new FillLayout());

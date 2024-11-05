@@ -19,15 +19,15 @@ public class JavaCallback implements IDisposable {
 
   public final String name;
 
-  private final CompletableFuture<AbstractBrowser> whenBrowser;
+  private final CompletableFuture<Browser> whenBrowser;
   private final Consumer<Object[]> callback;
   private DisposableFunction browserFunction;
 
-  public JavaCallback(final AbstractBrowser browser, final Consumer<Object[]> callback) {
+  public JavaCallback(final Browser browser, final Consumer<Object[]> callback) {
     this(CompletableFuture.completedFuture(browser), callback);
   }
 
-  public JavaCallback(final CompletableFuture<AbstractBrowser> whenBrowser, final Consumer<Object[]> callback) {
+  public JavaCallback(final CompletableFuture<Browser> whenBrowser, final Consumer<Object[]> callback) {
     this.whenBrowser = whenBrowser;
     this.name = toValidJavaScriptIdentifier("__scion_rcp_browserfunction_" + UUID.randomUUID());
     this.callback = callback;

@@ -9,7 +9,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
 import ch.sbb.scion.rcp.microfrontend.MicrofrontendPlatform;
-import ch.sbb.scion.rcp.microfrontend.browser.AbstractBrowser;
+import ch.sbb.scion.rcp.microfrontend.browser.Browser;
 import ch.sbb.scion.rcp.microfrontend.host.MicrofrontendPlatformRcpHost;
 import ch.sbb.scion.rcp.microfrontend.interceptor.IntentInterceptor;
 import ch.sbb.scion.rcp.microfrontend.interceptor.MessageInterceptor;
@@ -23,12 +23,12 @@ public class MicrofrontendPlatformImpl implements MicrofrontendPlatform {
   private MicrofrontendPlatformRcpHost microfrontendPlatformRcpHost;
 
   @Override
-  public CompletableFuture<AbstractBrowser> startHost(final MicrofrontendPlatformConfig config) {
+  public CompletableFuture<Browser> startHost(final MicrofrontendPlatformConfig config) {
     return startHost(config, true);
   }
 
   @Override
-  public CompletableFuture<AbstractBrowser> startHost(final MicrofrontendPlatformConfig config, final boolean headless) {
+  public CompletableFuture<Browser> startHost(final MicrofrontendPlatformConfig config, final boolean headless) {
     Objects.requireNonNull(config);
     return microfrontendPlatformRcpHost.start(config, headless);
   }

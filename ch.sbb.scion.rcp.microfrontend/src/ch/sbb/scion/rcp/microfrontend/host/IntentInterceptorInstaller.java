@@ -4,7 +4,7 @@ import java.lang.reflect.Type;
 
 import org.osgi.service.component.annotations.Component;
 
-import ch.sbb.scion.rcp.microfrontend.browser.AbstractBrowser;
+import ch.sbb.scion.rcp.microfrontend.browser.Browser;
 import ch.sbb.scion.rcp.microfrontend.browser.JavaCallback;
 import ch.sbb.scion.rcp.microfrontend.browser.JavaScriptExecutor;
 import ch.sbb.scion.rcp.microfrontend.interceptor.IntentInterceptor;
@@ -24,7 +24,7 @@ public class IntentInterceptorInstaller {
   /**
    * Installs given intent interceptor.
    */
-  public <T> void install(final IntentInterceptorDescriptor<T> interceptorDescriptor, final AbstractBrowser hostBrowser) {
+  public <T> void install(final IntentInterceptorDescriptor<T> interceptorDescriptor, final Browser hostBrowser) {
     createJavaInterceptorCallback(interceptorDescriptor, hostBrowser).install()
         .thenAccept(callback -> registerInterceptor(callback, interceptorDescriptor, hostBrowser));
   }
@@ -33,7 +33,7 @@ public class IntentInterceptorInstaller {
    * Registers the passed interceptor in the SCION Microfrontend Platform. Intercepted messages are delegated to the passed callback.
    */
   private <T> void registerInterceptor(final JavaCallback interceptorCallback, final IntentInterceptorDescriptor<T> interceptorDescriptor,
-      final AbstractBrowser hostBrowser) {
+      final Browser hostBrowser) {
     new JavaScriptExecutor(hostBrowser, Resources.readString("js/host/register-intent-interceptor.js"))
         .replacePlaceholder("interceptorCallback", interceptorCallback.name)
         .replacePlaceholder("type", interceptorDescriptor.type, Flags.ToJson)
@@ -48,7 +48,7 @@ public class IntentInterceptorInstaller {
    * Creates the Java callback for intercepting intents.
    */
   private <T> JavaCallback createJavaInterceptorCallback(final IntentInterceptorDescriptor<T> interceptorDescriptor,
-      final AbstractBrowser hostBrowser) {
+      final Browser hostBrowser) {
     return new JavaCallback(hostBrowser, args -> {
       IntentMessage<T> intent = GsonFactory.create().fromJson((String) args[0],
           new ParameterizedType(IntentMessage.class, interceptorDescriptor.payloadClazz));

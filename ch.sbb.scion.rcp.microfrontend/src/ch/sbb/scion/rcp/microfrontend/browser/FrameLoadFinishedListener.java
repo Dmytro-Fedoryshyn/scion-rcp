@@ -6,9 +6,12 @@
 package ch.sbb.scion.rcp.microfrontend.browser;
 
 /**
- * TODO Klasse dokumentieren
+ * A listener for receiving notifications when a frame has finished loading in the browser.
  */
 public interface FrameLoadFinishedListener {
 
+  /**
+   * Invoked when a frame has completed loading.
+   */
   public void onFrameLoadFinished();
 }
