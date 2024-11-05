@@ -25,7 +25,13 @@ public class SwtBrowser implements AbstractBrowser {
 
   public SwtBrowser(final Browser browser) {
     this.browser = browser;
+    browser.addProgressListener(new ProgressAdapter() {
 
+      @Override
+      public void completed(final ProgressEvent event) {
+        notifyFrameLoadFinished();
+      }
+    });
   }
 
   @Override
