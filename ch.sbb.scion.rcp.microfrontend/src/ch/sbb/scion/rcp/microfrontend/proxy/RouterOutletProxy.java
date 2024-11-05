@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
 import javax.inject.Inject;
@@ -33,7 +34,7 @@ public class RouterOutletProxy {
 
   private final String outletId;
   private final CompletableFuture<BrowserView> whenOutlet;
-  private final List<Consumer<String>> outletToProxyMessageListeners = new ArrayList<>();
+  private final List<Consumer<String>> outletToProxyMessageListeners = new CopyOnWriteArrayList<>();
   private final List<Consumer<Event>> outletToProxyKeystrokeListeners = new ArrayList<>();
   private final List<Consumer<Boolean>> outletToProxyFocusWithinListeners = new ArrayList<>();
   private final List<IDisposable> disposables = new ArrayList<>();
