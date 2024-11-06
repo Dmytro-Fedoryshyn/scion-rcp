@@ -76,11 +76,16 @@
 	<repositories>
 		<repository>
 			<id>eclipse-platform</id>
-			<url>https://download.eclipse.org/releases/${eclipse.release}/</url>
+			<url>https://download.eclipse.org/releases/latest/</url>
 			<layout>p2</layout>
 		</repository>
+		<repository>
+    <id>com.teamdev</id>
+    <url>https://europe-maven.pkg.dev/jxbrowser/releases</url>
+</repository>
 	</repositories>
-
+	
+	
 	<modules>
 		<!-- Target Platform & features -->
 		<module>ch.sbb.scion.rcp.microfrontend.targetplatform</module>
@@ -171,6 +176,9 @@
 				<artifactId>tycho-maven-plugin</artifactId>
 				<version>${tycho.version}</version>
 				<extensions>true</extensions>
+				<configuration>
+                <pomDependencies>consider</pomDependencies> <!-- This is the key configuration -->
+            </configuration>
 			</plugin>
 
 			<plugin>

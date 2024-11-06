@@ -4,6 +4,11 @@ Bundle-Name: SCION Microfrontend Platform
 Bundle-SymbolicName: rcp-microfrontend;singleton:=true
 Bundle-Version: 0.0.9.qualifier
 Bundle-Activator: ch.sbb.scion.rcp.microfrontend.Activator
+Bundle-ClassPath: lib/jxbrowser.jar,
+ lib/jxbrowser-win64.jar,
+ lib/jxbrowser-swt.jar,
+ .,
+ lib/lombok.jar
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.swt,
  org.eclipse.jface,
