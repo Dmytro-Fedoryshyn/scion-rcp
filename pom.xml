@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- (c) Copyright by SBB AG, 2019 - Alle Rechte vorbehalten -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ch.sbb.scion</groupId>
@@ -50,7 +52,8 @@
 
 	<scm>
 		<!--connection>scm:git:ssh://github.com/SchweizerischeBundesbahnen/scion-rcp.git</connection> -->
-		<developerConnection>scm:git:https://github.com/SchweizerischeBundesbahnen/scion-rcp.git</developerConnection>
+		<developerConnection>
+			scm:git:https://github.com/SchweizerischeBundesbahnen/scion-rcp.git</developerConnection>
 		<url>https://github.com/SchweizerischeBundesbahnen/scion-rcp/tree/master</url>
 		<tag>HEAD</tag>
 	</scm>
@@ -76,16 +79,16 @@
 	<repositories>
 		<repository>
 			<id>eclipse-platform</id>
-			<url>https://download.eclipse.org/releases/latest/</url>
+			<url>https://download.eclipse.org/releases/${eclipse.release}/</url>
 			<layout>p2</layout>
 		</repository>
 		<repository>
-    <id>com.teamdev</id>
-    <url>https://europe-maven.pkg.dev/jxbrowser/releases</url>
-</repository>
+			<id>com.teamdev</id>
+			<url>https://europe-maven.pkg.dev/jxbrowser/releases</url>
+		</repository>
 	</repositories>
-	
-	
+
+
 	<modules>
 		<!-- Target Platform & features -->
 		<module>ch.sbb.scion.rcp.microfrontend.targetplatform</module>
@@ -101,12 +104,14 @@
 
 		<!-- modules & test fragements -->
 		<!-- Please note: whenever you add a CodeCoverage-relevant module here, -->
-		<!-- add the same module as dependency in ch.sbb.scion.rcp.coveragereport/pom.xml -->
+		<!-- add the same module as dependency in
+		ch.sbb.scion.rcp.coveragereport/pom.xml -->
 		<module>ch.sbb.scion.rcp.microfrontend</module>
 		<module>ch.sbb.scion.rcp.microfrontend.test</module>
 		<module>ch.sbb.scion.rcp.workbench</module>
 		<module>ch.sbb.scion.rcp.microfrontend.e3.app.demo.test</module>
-		<!-- does not work at the moment: <module>ch.sbb.scion.rcp.workbench.test</module> -->
+		<!-- does not work at the moment:
+		<module>ch.sbb.scion.rcp.workbench.test</module> -->
 
 		<!-- code quality -->
 		<module>ch.sbb.scion.rcp.coveragereport</module>
@@ -148,7 +153,8 @@
 					<useUIHarness>false</useUIHarness>
 					<useUIThread>false</useUIThread>
 					<trimStackTrace>false</trimStackTrace>
-					<!-- even though thiese are the default patterns, they had to be given 
+					<!-- even though thiese are the default patterns, they had
+					to be given 
 						explicitly -->
 					<includes>
 						<include>**/*Test.*</include>
@@ -176,9 +182,6 @@
 				<artifactId>tycho-maven-plugin</artifactId>
 				<version>${tycho.version}</version>
 				<extensions>true</extensions>
-				<configuration>
-                <pomDependencies>consider</pomDependencies> <!-- This is the key configuration -->
-            </configuration>
 			</plugin>
 
 			<plugin>
@@ -206,8 +209,10 @@
 							<Bundle-ManifestVersion>2</Bundle-ManifestVersion>
 							<Bundle-SymbolicName>${project.artifactId}.source</Bundle-SymbolicName>
 							<Bundle-Version>${osgi.Bundle-Version}</Bundle-Version>
-							<Bundle-Name>Source for ${project.groupId}.${project.artifactId}</Bundle-Name>
-							<Eclipse-SourceBundle>${project.artifactId};version="${osgi.Bundle-Version}";roots:="."</Eclipse-SourceBundle>
+							<Bundle-Name>Source for
+								${project.groupId}.${project.artifactId}</Bundle-Name>
+							<Eclipse-SourceBundle>
+								${project.artifactId};version="${osgi.Bundle-Version}";roots:="."</Eclipse-SourceBundle>
 						</manifestEntries>
 					</archive>
 					<includePom>true</includePom>
@@ -228,7 +233,8 @@
 					<target>
 						<artifact>
 							<groupId>ch.sbb.scion</groupId>
-							<artifactId>ch.sbb.scion.rcp.microfrontend.targetplatform</artifactId>
+							<artifactId>
+								ch.sbb.scion.rcp.microfrontend.targetplatform</artifactId>
 							<version>${project.version}</version>
 						</artifact>
 					</target>
@@ -253,7 +259,8 @@
 			</plugin>
 
 			<plugin>
-				<!-- The flatten-maven-plugin must be in the build section so it doesn't 
+				<!-- The flatten-maven-plugin must be in the build section so it
+				doesn't 
 					have to be repeated in all child projects. However, the build of this parent 
 					POM must not execute flatten-flatten and flatten-clean. This is accomplished 
 					by binding them to the phase 'none' and setting the 'inherited' flag for 
@@ -292,8 +299,10 @@
 					<useReleaseProfile>false</useReleaseProfile>
 					<releaseProfiles>release</releaseProfiles>
 					<pushChanges>false</pushChanges>
-					<preparationGoals>tycho-versions:update-eclipse-metadata scm:add</preparationGoals>
-					<completionGoals>tycho-versions:update-eclipse-metadata scm:add</completionGoals>
+					<preparationGoals>tycho-versions:update-eclipse-metadata
+						scm:add</preparationGoals>
+					<completionGoals>tycho-versions:update-eclipse-metadata
+						scm:add</completionGoals>
 				</configuration>
 			</plugin>
 
