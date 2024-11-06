@@ -10,5 +10,6 @@
 	<classpathentry kind="lib" path="lib/lombok.jar"/>
 	<classpathentry kind="lib" path="lib/jxbrowser.jar"/>
 	<classpathentry kind="lib" path="lib/jxbrowser-win64.jar"/>
+		<classpathentry kind="lib" path="lib/jxbrowser-swt.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
