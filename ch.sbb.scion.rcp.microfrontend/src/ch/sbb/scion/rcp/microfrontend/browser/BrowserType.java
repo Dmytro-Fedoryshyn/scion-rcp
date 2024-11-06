@@ -6,9 +6,15 @@
 package ch.sbb.scion.rcp.microfrontend.browser;
 
 /**
- * TODO Klasse dokumentieren
+ * A type of the browsers, supported in the application.
  */
 public enum BrowserType {
+  /**
+   * A JxBrowser-based browser.
+   */
   JXBROWSER,
+  /**
+   * An SWT-based browser.
+   */
   SWT
 }
