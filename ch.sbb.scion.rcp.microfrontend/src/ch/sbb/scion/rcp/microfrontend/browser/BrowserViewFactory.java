@@ -24,10 +24,10 @@ public final class BrowserViewFactory {
    * Creates a new {@link BrowserView} instance of the specified type within the provided composite.
    *
    * @param type
-   *          the type of the browser view to create.
+   *          The type of the browser view to create.
    * @param composite
-   *          the parent composite in which the browser view will be embedded. Must not be {@code null}.
-   * @return a new {@link BrowserView} instance created with the specified type and embedded in the given composite.
+   *          The parent composite in which the browser view will be embedded. Must not be {@code null}.
+   * @return A new {@link BrowserView} instance created with the specified type and embedded in the given composite.
    */
   public static AbstractBrowserView createBrowserView(final BrowserViewType type, final Composite composite) {
     if (type == BrowserViewType.JXBROWSER) {

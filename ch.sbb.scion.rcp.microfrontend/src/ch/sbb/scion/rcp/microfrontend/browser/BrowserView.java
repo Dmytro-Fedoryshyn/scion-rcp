@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 import org.eclipse.swt.widgets.Display;
 
 /**
- * A web browser control, which provides essential features for working with web content.
+ * A browser view control, which allows working with web content.
  */
 public interface BrowserView {
 
@@ -18,7 +18,7 @@ public interface BrowserView {
    * Adds a listener to be notified about browser navigation events.
    *
    * @param listener
-   *          the listener to be added. Must not be {@code null}.
+   *          The listener to be added. Must not be {@code null}.
    */
   void addNavigationListener(NavigationListener listener);
 
@@ -26,7 +26,7 @@ public interface BrowserView {
    * Removes a previously added navigation listener.
    *
    * @param listener
-   *          the listener to be removed. Must not be {@code null}.
+   *          The listener to be removed. Must not be {@code null}.
    */
   void removeNavigationListener(NavigationListener listener);
 
@@ -34,7 +34,7 @@ public interface BrowserView {
    * Loads the specified URL in the browser.
    *
    * @param url
-   *          the URL to load. Must not be {@code null}.
+   *          The URL to load. Must not be {@code null}.
    */
   void loadUrl(String url);
 
@@ -42,8 +42,8 @@ public interface BrowserView {
    * Executes the given JavaScript code in the context of the currently loaded page.
    *
    * @param javaScript
-   *          the JavaScript code to execute. Must not be {@code null}.
-   * @return the result of the JavaScript execution, or {@code null} if no return value.
+   *          The JavaScript code to execute. Must not be {@code null}.
+   * @return The result of the JavaScript execution, or {@code null} if no return value.
    */
   Object executeJavaScript(String javaScript);
 
@@ -58,11 +58,11 @@ public interface BrowserView {
    * Registers a JavaScript function that can be called from JavaScript code.
    *
    * @param name
-   *          the name of the JavaScript function. Must not be {@code null} or empty.
+   *          The name of the JavaScript function. Must not be {@code null} or empty.
    * @param once
-   *          if true, the function will be removed after its first invocation.
+   *          If true, the function will be removed after its first invocation.
    * @param callback
-   *          the callback to execute when the function is called. Must not be {@code null}.
+   *          The callback to execute when the function is called. Must not be {@code null}.
    */
   DisposableJsFunction registerJsFunction(String name, boolean once, Consumer<Object[]> callback);
 
