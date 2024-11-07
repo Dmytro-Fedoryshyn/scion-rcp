@@ -19,8 +19,8 @@ public class JavaCallback implements IDisposable {
 
   public final String name;
 
-  private final CompletableFuture<BrowserView> whenBrowser;
-  private final Consumer<Object[]> callback;
+  private CompletableFuture<BrowserView> whenBrowser;
+  private Consumer<Object[]> callback;
   private DisposableFunction browserFunction;
 
   public JavaCallback(BrowserView browser, Consumer<Object[]> callback) {
