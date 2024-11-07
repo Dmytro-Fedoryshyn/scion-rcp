@@ -221,7 +221,7 @@ Export-Package: com.teamdev.jxbrowser,
  com.teamdev.jxbrowser.zoom.internal,
  com.teamdev.jxbrowser.zoom.internal.rpc
 Require-Bundle: org.eclipse.swt;bundle-version="3.124.100"
-Automatic-Module-Name: jxbrowser1
+Automatic-Module-Name: jxbrowser
 Bundle-ClassPath: jxbrowser.jar,
  jxbrowser-swt.jar,
  .
