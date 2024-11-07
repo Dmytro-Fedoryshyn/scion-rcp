@@ -9,24 +9,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The base implementation of {@link BrowserView}, which provides essential features for working with web content.
+ * The base implementation of {@link BrowserView}.
  */
 public abstract class AbstractBrowserView implements BrowserView {
 
   private final List<NavigationListener> listeners = new ArrayList<>();
 
   @Override
-  public void addNavigationListener(NavigationListener listener) {
-    listeners.add(listener);
+  public void addNavigationListener(final NavigationListener listener) {
+    if (!listeners.contains(listener)) {
+      listeners.add(listener);
+    }
   }
 
   @Override
-  public void removeNavigationListener(NavigationListener listener) {
+  public void removeNavigationListener(final NavigationListener listener) {
     listeners.remove(listener);
   }
 
   /**
-   * Notifies that a frame has finished loading. This method should be called to trigger frame load completion events.
+   * Notifies that a main frame has finished loading.
    */
   protected void notifyFrameLoadFinished() {
     for (NavigationListener listener : listeners) {

@@ -16,16 +16,16 @@ import com.teamdev.jxbrowser.navigation.event.FrameLoadFinished;
 import com.teamdev.jxbrowser.view.swt.BrowserView;
 
 /**
- * JxBrowser implementation of the {@link Browser} interface.
+ * JxBrowser implementation of the {@link BrowserView} interface.
  */
 public class JxBrowserView extends AbstractBrowserView {
 
-  private final BrowserView browserView;
   private final Browser browser;
+  private final BrowserView browserView;
 
-  public JxBrowserView(BrowserView browserView) {
-    this.browserView = browserView;
+  public JxBrowserView(final BrowserView browserView) {
     this.browser = browserView.getBrowser();
+    this.browserView = browserView;
 
     browser.navigation().on(FrameLoadFinished.class, e -> {
       if (e.frame().isMain()) {
@@ -35,22 +35,13 @@ public class JxBrowserView extends AbstractBrowserView {
   }
 
   @Override
-  public void loadUrl(String url) {
+  public void loadUrl(final String url) {
     browser.navigation().loadUrlAndWait(url);
   }
 
   @Override
-  public Object executeJavaScript(String javaScript) {
+  public Object executeJavaScript(final String javaScript) {
     return browser.mainFrame().orElseThrow().executeJavaScript(javaScript);
-  }
-
-  @Override
-  public void onLoadFinished(Runnable action) {
-    browser.navigation().on(FrameLoadFinished.class, e -> {
-      if (e.frame().isMain()) {
-        action.run();
-      }
-    });
   }
 
   @Override
@@ -59,13 +50,13 @@ public class JxBrowserView extends AbstractBrowserView {
   }
 
   @Override
-  public DisposableFunction addFunction(String name, boolean once, Consumer<Object[]> callback) {
+  public DisposableJsFunction registerJsFunction(final String name, final boolean once, final Consumer<Object[]> callback) {
     JsObject window = browserView.getBrowser().mainFrame().orElseThrow().executeJavaScript("window");
     // Define the JsFunctionCallback to handle invocations from JavaScript
     JsFunctionCallback c = new JsFunctionCallback() {
 
       @Override
-      public Object invoke(Object... args) {
+      public Object invoke(final Object... args) {
         if (once) {
           // Remove the callback from the JavaScript context after one use
           window.removeProperty(name);
@@ -83,7 +74,7 @@ public class JxBrowserView extends AbstractBrowserView {
     // Bind the JavaScript function to the `window` object
     window.putProperty(name, c);
 
-    return new DisposableFunction() {
+    return new DisposableJsFunction() {
 
       @Override
       public void dispose() {

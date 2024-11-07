@@ -26,7 +26,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import ch.sbb.scion.rcp.microfrontend.browser.BrowserType;
+import ch.sbb.scion.rcp.microfrontend.browser.BrowserViewType;
 import ch.sbb.scion.rcp.microfrontend.browser.BrowserView;
 import ch.sbb.scion.rcp.microfrontend.browser.BrowserViewFactory;
 import ch.sbb.scion.rcp.microfrontend.browser.JavaCallback;
@@ -78,7 +78,7 @@ public final class RouterOutlet extends Composite implements DisposeListener {
 
     routerOutletProxy = new RouterOutletProxy(outletName);
 
-    browser = BrowserViewFactory.createBrowser(BrowserType.JXBROWSER, this);
+    browser = BrowserViewFactory.createBrowserView(BrowserViewType.JXBROWSER, this);
     browser.addNavigationListener(new NavigationListener() {
 
       private final List<IDisposable> disposables = new ArrayList<>();

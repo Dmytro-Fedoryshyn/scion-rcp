@@ -21,7 +21,7 @@ public class JavaCallback implements IDisposable {
 
   private CompletableFuture<BrowserView> whenBrowser;
   private Consumer<Object[]> callback;
-  private DisposableFunction browserFunction;
+  private DisposableJsFunction browserFunction;
 
   public JavaCallback(BrowserView browser, Consumer<Object[]> callback) {
     this(CompletableFuture.completedFuture(browser), callback);
@@ -51,7 +51,7 @@ public class JavaCallback implements IDisposable {
 
   public CompletableFuture<JavaCallback> install(boolean once) {
     return whenBrowser.thenAccept(browserView -> {
-      browserFunction = browserView.addFunction(name, once, callback);
+      browserFunction = browserView.registerJsFunction(name, once, callback);
     }).thenApply(browserView -> this);
   }
 

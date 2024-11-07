@@ -15,33 +15,33 @@ import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.view.swt.BrowserView;
 
 /**
- * Factory class for creating different types of browser instances. This class provides methods to create browsers for both JxBrowser and
- * SWT environments.
+ * Factory class for creating different types of {@link BrowserView} instances. This class provides methods to create browser views for both
+ * JxBrowser and SWT environments.
  */
 public final class BrowserViewFactory {
 
   /**
-   * Creates a new browser of the specified type within the provided composite.
+   * Creates a new {@link BrowserView} instance of the specified type within the provided composite.
    *
    * @param type
-   *          the type of the browser to create.
+   *          the type of the browser view to create.
    * @param composite
-   *          the parent composite in which the browser will be embedded. Must not be null.
-   * @return a new {@code Browser} instance created with the specified type and embedded in the given composite.
+   *          the parent composite in which the browser view will be embedded. Must not be {@code null}.
+   * @return a new {@link BrowserView} instance created with the specified type and embedded in the given composite.
    */
-  public static AbstractBrowserView createBrowser(BrowserType type, Composite composite) {
-    if (type == BrowserType.JXBROWSER) {
-      Engine engine = Engine.newInstance(EngineOptions.newBuilder(HARDWARE_ACCELERATED).licenseKey("k").build());
+  public static AbstractBrowserView createBrowserView(final BrowserViewType type, final Composite composite) {
+    if (type == BrowserViewType.JXBROWSER) {
+      var engine = Engine.newInstance(EngineOptions.newBuilder(HARDWARE_ACCELERATED).licenseKey("your_key").build());
       var browser = engine.newBrowser();
       return new JxBrowserView(BrowserView.newInstance(composite, browser));
     }
 
-    if (type == BrowserType.SWT) {
+    if (type == BrowserViewType.SWT) {
       var browser = new org.eclipse.swt.browser.Browser(composite, SWT.EDGE);
       return new SwtBrowserView(browser);
     }
 
-    throw new IllegalArgumentException("Unsupported browser type " + type + ". ");
+    throw new IllegalArgumentException("Unsupported type " + type + ". ");
   }
 
   private BrowserViewFactory() {

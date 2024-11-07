@@ -15,18 +15,18 @@ import org.eclipse.swt.widgets.Display;
 public interface BrowserView {
 
   /**
-   * Adds a listener to be notified when a frame finishes loading in the browser.
+   * Adds a listener to be notified about browser navigation events.
    *
    * @param listener
-   *          the listener to be added. Must not be null.
+   *          the listener to be added. Must not be {@code null}.
    */
   void addNavigationListener(NavigationListener listener);
 
   /**
-   * Removes a previously added frame load listener.
+   * Removes a previously added navigation listener.
    *
    * @param listener
-   *          the listener to be removed. Must not be null.
+   *          the listener to be removed. Must not be {@code null}.
    */
   void removeNavigationListener(NavigationListener listener);
 
@@ -34,7 +34,7 @@ public interface BrowserView {
    * Loads the specified URL in the browser.
    *
    * @param url
-   *          the URL to load. Must not be null or empty.
+   *          the URL to load. Must not be {@code null}.
    */
   void loadUrl(String url);
 
@@ -42,42 +42,32 @@ public interface BrowserView {
    * Executes the given JavaScript code in the context of the currently loaded page.
    *
    * @param javaScript
-   *          the JavaScript code to execute. Must not be null.
-   * @return the result of the JavaScript execution, or null if no return value.
+   *          the JavaScript code to execute. Must not be {@code null}.
+   * @return the result of the JavaScript execution, or {@code null} if no return value.
    */
   Object executeJavaScript(String javaScript);
 
   /**
-   * Sets a callback to be executed when the page loading is finished.
+   * Checks if the browser view has focus.
    *
-   * @param action
-   *          a {@link Runnable} to execute once loading is completed. Must not be null.
-   */
-  void onLoadFinished(Runnable action);
-
-  /**
-   * Checks if the browser currently has focus.
-   *
-   * @return true if the browser has focus; false otherwise.
+   * @return {@code true} if the browser view has focus.
    */
   boolean isFocused();
 
   /**
-   * Adds a JavaScript function that can be called from JavaScript code.
+   * Registers a JavaScript function that can be called from JavaScript code.
    *
    * @param name
-   *          the name of the JavaScript function. Must not be null or empty.
+   *          the name of the JavaScript function. Must not be {@code null} or empty.
    * @param once
    *          if true, the function will be removed after its first invocation.
    * @param callback
-   *          the callback to execute when the function is called. Must not be null.
+   *          the callback to execute when the function is called. Must not be {@code null}.
    */
-  DisposableFunction addFunction(String name, boolean once, Consumer<Object[]> callback);
+  DisposableJsFunction registerJsFunction(String name, boolean once, Consumer<Object[]> callback);
 
   /**
-   * Returns the display associated with this browser.
-   *
-   * @return the {@link Display} object associated with this browser.
+   * Returns the {@link Display} instance of this browser view.
    */
   Display getDisplay();
 }

@@ -6,15 +6,15 @@
 package ch.sbb.scion.rcp.microfrontend.browser;
 
 /**
- * A type of the browsers, supported in the application.
+ * The list of supported {@link BrowserView} types.
  */
-public enum BrowserType {
+public enum BrowserViewType {
   /**
-   * A JxBrowser-based browser.
+   * JxBrowser's SWT browser view control.
    */
   JXBROWSER,
   /**
-   * An SWT-based browser.
+   * Standard Eclipse SWT browser view control.
    */
   SWT
 }
