@@ -49,7 +49,7 @@ public class JavaCallback implements IDisposable {
     return install(true);
   }
 
-  public CompletableFuture<JavaCallback> install(final boolean once) {
+  public CompletableFuture<JavaCallback> install(boolean once) {
     return whenBrowser.thenAccept(browserView -> {
       browserFunction = browserView.addFunction(name, once, callback);
     }).thenApply(browserView -> this);

@@ -20,7 +20,7 @@ public class SwtBrowserView extends AbstractBrowserView {
 
   private final Browser browser;
 
-  public SwtBrowserView(final Browser browser) {
+  public SwtBrowserView(Browser browser) {
     this.browser = browser;
     browser.addProgressListener(new ProgressAdapter() {
 
@@ -32,18 +32,18 @@ public class SwtBrowserView extends AbstractBrowserView {
   }
 
   @Override
-  public void loadUrl(final String url) {
+  public void loadUrl(String url) {
     browser.setUrl(url);
   }
 
   @Override
-  public Object executeJavaScript(final String javaScript) {
+  public Object executeJavaScript(String javaScript) {
     return browser.execute(javaScript);
 
   }
 
   @Override
-  public void onLoadFinished(final Runnable action) {
+  public void onLoadFinished(Runnable action) {
     browser.addProgressListener(new ProgressAdapter() {
 
       @Override
@@ -59,11 +59,11 @@ public class SwtBrowserView extends AbstractBrowserView {
   }
 
   @Override
-  public DisposableFunction addFunction(final String name, final boolean once, final Consumer<Object[]> callback) {
+  public DisposableFunction addFunction(String name, boolean once, Consumer<Object[]> callback) {
     BrowserFunction browserFunction = new BrowserFunction(browser, name) {
 
       @Override
-      public Boolean function(final Object[] arguments) {
+      public Boolean function(Object[] arguments) {
         if (once) {
           dispose();
         }

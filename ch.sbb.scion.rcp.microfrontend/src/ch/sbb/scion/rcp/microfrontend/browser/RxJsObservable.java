@@ -27,13 +27,13 @@ public class RxJsObservable<T> {
   private final Type clazz;
   private final String rxjsObservableIIFE;
 
-  public RxJsObservable(final CompletableFuture<BrowserView> browser, final String rxjsObservableIIFE, final Type clazz) {
+  public RxJsObservable(CompletableFuture<BrowserView> browser, String rxjsObservableIIFE, final Type clazz) {
     this.whenBrowser = browser;
     this.rxjsObservableIIFE = rxjsObservableIIFE;
     this.clazz = clazz;
   }
 
-  public ISubscription subscribe(final ISubscriber<T> observer) {
+  public ISubscription subscribe(ISubscriber<T> observer) {
     var disposables = new ArrayList<IDisposable>();
 
     new JavaCallback(whenBrowser, args -> {

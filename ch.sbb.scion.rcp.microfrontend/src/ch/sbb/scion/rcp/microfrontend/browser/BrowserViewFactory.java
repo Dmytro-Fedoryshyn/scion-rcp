@@ -29,7 +29,7 @@ public final class BrowserViewFactory {
    *          the parent composite in which the browser will be embedded. Must not be null.
    * @return a new {@code Browser} instance created with the specified type and embedded in the given composite.
    */
-  public static AbstractBrowserView createBrowser(final BrowserType type, final Composite composite) {
+  public static AbstractBrowserView createBrowser(BrowserType type, Composite composite) {
     if (type == BrowserType.JXBROWSER) {
       Engine engine = Engine.newInstance(EngineOptions.newBuilder(HARDWARE_ACCELERATED).licenseKey("k").build());
       var browser = engine.newBrowser();

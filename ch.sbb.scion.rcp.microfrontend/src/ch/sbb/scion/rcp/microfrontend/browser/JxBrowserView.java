@@ -23,7 +23,7 @@ public class JxBrowserView extends AbstractBrowserView {
   private final BrowserView browserView;
   private final Browser browser;
 
-  public JxBrowserView(final BrowserView browserView) {
+  public JxBrowserView(BrowserView browserView) {
     this.browserView = browserView;
     this.browser = browserView.getBrowser();
 
@@ -35,17 +35,17 @@ public class JxBrowserView extends AbstractBrowserView {
   }
 
   @Override
-  public void loadUrl(final String url) {
+  public void loadUrl(String url) {
     browser.navigation().loadUrlAndWait(url);
   }
 
   @Override
-  public Object executeJavaScript(final String javaScript) {
+  public Object executeJavaScript(String javaScript) {
     return browser.mainFrame().orElseThrow().executeJavaScript(javaScript);
   }
 
   @Override
-  public void onLoadFinished(final Runnable action) {
+  public void onLoadFinished(Runnable action) {
     browser.navigation().on(FrameLoadFinished.class, e -> {
       if (e.frame().isMain()) {
         action.run();
@@ -59,13 +59,13 @@ public class JxBrowserView extends AbstractBrowserView {
   }
 
   @Override
-  public DisposableFunction addFunction(final String name, final boolean once, final Consumer<Object[]> callback) {
+  public DisposableFunction addFunction(String name, boolean once, Consumer<Object[]> callback) {
     JsObject window = browserView.getBrowser().mainFrame().orElseThrow().executeJavaScript("window");
     // Define the JsFunctionCallback to handle invocations from JavaScript
     JsFunctionCallback c = new JsFunctionCallback() {
 
       @Override
-      public Object invoke(final Object... args) {
+      public Object invoke(Object... args) {
         if (once) {
           // Remove the callback from the JavaScript context after one use
           window.removeProperty(name);

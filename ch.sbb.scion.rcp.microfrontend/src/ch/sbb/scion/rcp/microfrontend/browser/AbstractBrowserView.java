@@ -9,19 +9,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The base implementation of [BrowserView], which provides essential features for working with web content.
+ * The base implementation of {@link BrowserView}, which provides essential features for working with web content.
  */
 public abstract class AbstractBrowserView implements BrowserView {
 
   private final List<NavigationListener> listeners = new ArrayList<>();
 
   @Override
-  public void addNavigationListener(final NavigationListener listener) {
+  public void addNavigationListener(NavigationListener listener) {
     listeners.add(listener);
   }
 
   @Override
-  public void removeNavigationListener(final NavigationListener listener) {
+  public void removeNavigationListener(NavigationListener listener) {
     listeners.remove(listener);
   }
 

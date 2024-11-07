@@ -8,10 +8,10 @@ import ch.sbb.scion.rcp.microfrontend.script.Script;
 
 public class JavaScriptExecutor {
 
-  private final CompletableFuture<BrowserView> browser;
+  private CompletableFuture<BrowserView> browser;
   private boolean logToConsole;
   private boolean asyncFunction;
-  private final Script browserScript;
+  private Script browserScript;
 
   public JavaScriptExecutor(BrowserView browser, String script) {
     this(CompletableFuture.completedFuture(browser), script);
@@ -51,7 +51,7 @@ public class JavaScriptExecutor {
     }
 
     return browser.thenAccept(browser -> {
-      boolean success = (boolean) browser.executeJavaScript(iife);
+      var success = (boolean) browser.executeJavaScript(iife);
       if (!success) {
         Platform.getLog(JavaScriptExecutor.class).error("Failed to inject or execute JavaScript: " + iife);
       }
