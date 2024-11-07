@@ -73,10 +73,10 @@ public class JavaCallback implements IDisposable {
   public void dispose() {
     if (browserFunction != null) {
       browserFunction.dispose();
-      browserFunction = null;
+      browserFunction = null; 
     }
   }
-
+ 
   private String toValidJavaScriptIdentifier(String name) {
     if (Pattern.matches("^\\d.+", name)) {
       throw new IllegalArgumentException(String.format("JavaScript identifier must not start with a digit. [name=%s]", name));
