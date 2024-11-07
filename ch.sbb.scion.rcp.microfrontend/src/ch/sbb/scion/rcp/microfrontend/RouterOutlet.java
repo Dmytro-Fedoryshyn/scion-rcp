@@ -81,12 +81,13 @@ public final class RouterOutlet extends Composite implements DisposeListener {
     browser = BrowserViewFactory.createBrowser(BrowserType.JXBROWSER, this);
     browser.addNavigationListener(new NavigationListener() {
 
-      final List<IDisposable> disposables = new ArrayList<>();
+      private final List<IDisposable> disposables = new ArrayList<>();
 
       @Override
       public void onFrameLoadFinished() {
         // is invoked when completed loading the app, or when reloading it, e.g., due to
         // hot code replacement during development
+        disposables.forEach(IDisposable::dispose);
         disposables.clear();
 
         browser.executeJavaScript(Resources.readString("js/helpers.js"));

@@ -72,10 +72,9 @@ public class JxBrowserView extends AbstractBrowserView {
         }
 
         // Execute the callback in SWT's display thread
-        Display display = browserView.getDisplay();
-        display.asyncExec(() -> {
-          callback.accept(args);
-        });
+        // Invoke the callback asynchronously to first complete the invocation of this browser function.
+        // Otherwise, creating a new {@link Browser} instance in the callback would lead to a deadlock.
+        browserView.getDisplay().asyncExec(() -> callback.accept(args));
 
         return Boolean.TRUE;
       }
