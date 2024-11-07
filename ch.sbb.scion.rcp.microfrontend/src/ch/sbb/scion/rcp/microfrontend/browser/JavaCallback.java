@@ -84,3 +84,4 @@ public class JavaCallback implements IDisposable {
     return name.replaceAll("[^\\w\\d\\$]", "_");
   }
 }
+
