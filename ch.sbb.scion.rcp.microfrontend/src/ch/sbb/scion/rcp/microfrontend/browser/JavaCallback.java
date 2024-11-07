@@ -77,7 +77,7 @@ public class JavaCallback implements IDisposable {
     }
   }
 
-  private String toValidJavaScriptIdentifier(final String name) {
+  private String toValidJavaScriptIdentifier(String name) {
     if (Pattern.matches("^\\d.+", name)) {
       throw new IllegalArgumentException(String.format("JavaScript identifier must not start with a digit. [name=%s]", name));
     }
