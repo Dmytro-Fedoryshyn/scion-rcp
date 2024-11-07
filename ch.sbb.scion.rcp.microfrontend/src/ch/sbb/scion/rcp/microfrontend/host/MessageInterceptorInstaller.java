@@ -28,7 +28,7 @@ public class MessageInterceptorInstaller {
   /**
    * Installs given message interceptor.
    */
-  public <T> void install(MessageInterceptorDescriptor<T> interceptorDescriptor, BrowserView hostBrowser) {
+  public <T> void install(final MessageInterceptorDescriptor<T> interceptorDescriptor, final BrowserView hostBrowser) {
     createJavaInterceptorCallback(interceptorDescriptor, hostBrowser).install()
         .thenAccept(callback -> registerInterceptor(callback, interceptorDescriptor, hostBrowser));
   }
@@ -36,7 +36,7 @@ public class MessageInterceptorInstaller {
   /**
    * Registers the passed interceptor in the SCION Microfrontend Platform. Intercepted messages are delegated to the passed callback.
    */
-  private <T> void registerInterceptor(JavaCallback interceptorCallback, MessageInterceptorDescriptor<T> interceptorDescriptor,
+  private <T> void registerInterceptor(final JavaCallback interceptorCallback, final MessageInterceptorDescriptor<T> interceptorDescriptor,
       final BrowserView hostBrowser) {
     new JavaScriptExecutor(hostBrowser, Resources.readString("js/host/register-message-interceptor.js"))
         .replacePlaceholder("interceptorCallback", interceptorCallback.name)
@@ -49,7 +49,7 @@ public class MessageInterceptorInstaller {
   /**
    * Creates the Java callback for intercepting messages.
    */
-  private <T> JavaCallback createJavaInterceptorCallback(MessageInterceptorDescriptor<T> interceptorDescriptor,
+  private <T> JavaCallback createJavaInterceptorCallback(final MessageInterceptorDescriptor<T> interceptorDescriptor,
       final BrowserView hostBrowser) {
     return new JavaCallback(hostBrowser, args -> {
       TopicMessage<T> message = GsonFactory.create().fromJson((String) args[0],
@@ -64,7 +64,7 @@ public class MessageInterceptorInstaller {
     public MessageInterceptor<T> interceptor;
     public Type payloadClazz;
 
-    public MessageInterceptorDescriptor(String topic, MessageInterceptor<T> interceptor, Type payloadClazz) {
+    public MessageInterceptorDescriptor(final String topic, final MessageInterceptor<T> interceptor, final Type payloadClazz) {
       this.topic = topic;
       this.interceptor = interceptor;
       this.payloadClazz = payloadClazz;

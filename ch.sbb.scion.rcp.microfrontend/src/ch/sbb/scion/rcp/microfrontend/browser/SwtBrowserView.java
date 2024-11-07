@@ -78,7 +78,9 @@ public class SwtBrowserView extends AbstractBrowserView {
 
       @Override
       public void dispose() {
-        browserFunction.dispose();
+        if (!browserFunction.isDisposed()) {
+          browserFunction.dispose();
+        }
       }
     };
   }
