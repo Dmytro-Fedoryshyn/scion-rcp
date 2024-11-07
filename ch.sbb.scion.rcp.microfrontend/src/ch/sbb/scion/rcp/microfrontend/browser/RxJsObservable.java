@@ -23,9 +23,9 @@ import ch.sbb.scion.rcp.microfrontend.subscriber.ISubscription;
  */
 public class RxJsObservable<T> {
 
-  private final CompletableFuture<BrowserView> whenBrowser;
-  private final Type clazz;
-  private final String rxjsObservableIIFE;
+  private CompletableFuture<BrowserView> whenBrowser;
+  private Type clazz;
+  private String rxjsObservableIIFE;
 
   public RxJsObservable(CompletableFuture<BrowserView> browser, String rxjsObservableIIFE, final Type clazz) {
     this.whenBrowser = browser;

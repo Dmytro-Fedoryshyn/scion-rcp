@@ -73,7 +73,7 @@ public class JavaCallback implements IDisposable {
   public void dispose() {
     if (browserFunction != null) {
       browserFunction.dispose();
-      browserFunction = null; 
+      browserFunction = null;
     }
   }
  
